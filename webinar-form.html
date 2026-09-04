@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма регистрации на вебинар</title>
+</head>
+<body>
+
+    <!-- Шаг 1: Структура формы -->
+    <!-- Форма будет отправлять данные на register.php методом POST -->
+    <form action="register.php" method="POST">
+
+        <!-- Шаг 2: Личные данные -->
+        <fieldset>
+            <legend>Личные данные</legend>
+
+            <!-- Поле для имени -->
+            <label for="first_name">Имя:</label>
+            <input type="text" id="first_name" name="first_name" required>
+            <br><br>
+
+            <!-- Поле для фамилии -->
+            <label for="last_name">Фамилия:</label>
+            <input type="text" id="last_name" name="last_name" required>
+        </fieldset>
+
+        <br>
+
+        <!-- Шаг 3: Контактная информация -->
+        <!-- Здесь мы добавляем поля для email и телефона -->
+        <fieldset>
+            <legend>Контактная информация</legend>
+
+            <!-- Поле для email (обязательно) -->
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <br><br>
+
+            <!-- Поле для телефона (необязательно) -->
+            <label for="phone">Телефон:</label>
+            <input type="text" id="phone" name="phone">
+        </fieldset>
+
+        <br>
+
+        <!-- Шаг 4: Настройки вебинара -->
+        <!-- Здесь пользователь может выбрать тему вебинара -->
+        <fieldset>
+            <legend>Настройки вебинара</legend>
+
+            <!-- Выпадающий список с темами вебинара -->
+            <label for="topic">Выберите тему вебинара:</label>
+            <select id="topic" name="topic">
+                <option value="html_basics">Основы HTML</option>
+                <option value="html_forms">Формы в HTML</option>
+                <option value="form_validation">Валидация форм</option>
+            </select>
+        </fieldset>
+
+        <br>
+
+        <!-- Шаг 5: Кнопка отправки -->
+        <!-- Кнопка, которая отправит все данные формы на сервер -->
+        <button type="submit">Зарегистрироваться</button>
+
+    </form>
+
+</body>
+  </html>
