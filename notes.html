@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>daily notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body {
+  margin: 0;
+  background: #ffffff;
+  color: #3d3a45;
+  font-family: 'Nunito', sans-serif;
+  line-height: 1.55;
+}
+
+.hero {
+  text-align: center;
+  padding: 2.4rem 1.2rem 1.2rem;
+}
+
+.hero h1 {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin: 0;
+  color: #5a5468;
+}
+
+main {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0.5rem 1.1rem 2.5rem;
+}
+
+.entry {
+  background: #ffffff;
+  border: 1px solid #eee;
+  border-top: 5px solid var(--accent);
+  border-radius: 14px;
+  padding: 1.2rem 1.3rem;
+  margin-bottom: 1.2rem;
+}
+
+.entry-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, white);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  margin-bottom: 0.6rem;
+}
+
+.entry-term {
+  margin: 0 0 0.6rem;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #4a4458;
+}
+
+.entry-note {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #5a5468;
+}
+
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>мой дневник кода 🌸🌱</h1>
+</header>
+
+<main id="log"></main>
+
+<script>
+// Добавляй новую запись сверху каждый день — дата в формате YYYY-MM-DD.
+// category: "html" | "css" | "js" | "ts"
+
+const entries = [
+  {
+    date: "2026-09-05",
+    category: "js",
+    term: "for...of",
+    note: "Проходит по значениям массива или строки — удобно, когда индекс не нужен."
+  },
+  {
+    date: "2026-09-04",
+    category: "css",
+    term: "display: flex",
+    note: "Включает гибкую разметку. Помогает выстраивать элементы в ряд или колонку."
+  }
+];
+
+</script>
+<script>
+const catNames = { html: "HTML", css: "CSS", js: "JavaScript", ts: "TypeScript" };
+const palette = ["#f28fb0", "#a98ff0", "#5fc9a8", "#f0a95f", "#5fa8e8"];
+
+const log = document.getElementById("log");
+
+entries.forEach((e, i) => {
+  const card = document.createElement("div");
+  card.className = "entry";
+  card.style.setProperty("--accent", palette[i % palette.length]);
+  card.innerHTML = `
+    <span class="entry-tag">${catNames[e.category]}</span>
+    <p class="entry-term">${e.term}</p>
+    <p class="entry-note">${e.note}</p>
+  `;
+  log.appendChild(card);
+});
+
+</script>
+</body>
+</html>
