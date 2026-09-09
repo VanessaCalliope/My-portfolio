@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мой Блог</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FBF8F3;
+    --paper-soft: #F3EEE4;
+    --ink: #2E2A24;
+    --ink-soft: #6B6355;
+    --accent: #C99CA3;
+    --accent-dark: #B07E87;
+    --line: #E3DCCC;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.55;
+  }
+
+  .wrap {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  header {
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 28px;
+  }
+
+  h1 {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: 2.1rem;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .tagline {
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    margin: 0;
+  }
+
+  section.new-post {
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 44px;
+  }
+
+  section.new-post h2 {
+    font-family: 'Lora', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 0 0 16px;
+  }
+
+  input[type="text"], textarea {
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: #fff;
+    color: var(--ink);
+    margin-bottom: 12px;
+    resize: vertical;
+  }
+
+  textarea { min-height: 100px; }
+
+  input[type="text"]:focus, textarea:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+
+  button.publish {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 11px 22px;
+    border-radius: 7px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  button.publish:hover { background: var(--accent-dark); }
+
+  .error {
+    color: #B0432F;
+    font-size: 0.85rem;
+    margin: -4px 0 10px;
+    display: none;
+  }
+
+  .posts h2.list-title {
+    font-family: 'Lora', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+
+  .post {
+    border-bottom: 1px solid var(--line);
+    padding: 20px 0;
+  }
+
+  .post:last-child { border-bottom: none; }
+
+  .post-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .post h3 {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 0 0 6px;
+  }
+
+  .post .date {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  .post p {
+    margin: 4px 0 10px;
+    color: var(--ink);
+    white-space: pre-wrap;
+  }
+
+  .delete-btn {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 0.78rem;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+  }
+
+  .delete-btn:hover { color: #B0432F; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>Мой Блог</h1>
+    <p class="tagline">Здесь я делюсь своими мыслями</p>
+  </header>
+
+  <section class="new-post">
+    <h2>Добавить новую запись</h2>
+    <input type="text" id="titleInput" placeholder="Заголовок записи">
+    <textarea id="textInput" placeholder="Текст вашей записи..."></textarea>
+    <p class="error" id="errorMsg">Заполни и заголовок, и текст 🙂</p>
+    <button class="publish" id="publishBtn">Опубликовать</button>
+  </section>
+
+  <section class="posts">
+    <h2 class="list-title">Все записи</h2>
+    <div id="postsList"></div>
+  </section>
+</div>
+
+<script>
+  // Ключ, под которым храним массив записей в localStorage
+  var STORAGE_KEY = 'my-blog-posts';
+
+  // Достаём элементы со страницы один раз
+  var titleInput = document.getElementById('titleInput');
+  var textInput = document.getElementById('textInput');
+  var publishBtn = document.getElementById('publishBtn');
+  var errorMsg = document.getElementById('errorMsg');
+  var postsList = document.getElementById('postsList');
+
+  // Читаем записи из localStorage
+  function loadPosts() {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      return JSON.parse(raw);
+    } else {
+      return [];
+    }
+  }
+
+  // Сохраняем массив записей обратно в localStorage
+  function savePosts(posts) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+  }
+
+  // Защита от того, чтобы текст записи не сломал HTML-разметку
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // Отрисовываем список записей на странице
+  function renderPosts() {
+    var posts = loadPosts();
+    var html = '';
+
+    // идём по массиву с конца в начало, чтобы новые записи были сверху
+    for (var i = posts.length - 1; i >= 0; i--) {
+      var post = posts[i];
+      html += '<div class="post">';
+      html += '<div class="post-top">';
+      html += '<h3>' + escapeHtml(post.title) + '</h3>';
+      html += '<span class="date">' + post.date + '</span>';
+      html += '</div>';
+      html += '<p>' + escapeHtml(post.text) + '</p>';
+      html += '<button class="delete-btn" onclick="deletePost(' + post.id + ')">Удалить</button>';
+      html += '</div>';
+    }
+
+    postsList.innerHTML = html;
+  }
+
+  // Обработчик кнопки "Опубликовать"
+  publishBtn.addEventListener('click', function () {
+    var title = titleInput.value.trim();
+    var text = textInput.value.trim();
+
+    if (title === '' || text === '') {
+      errorMsg.style.display = 'block';
+      return;
+    }
+    errorMsg.style.display = 'none';
+
+    var posts = loadPosts();
+    var newPost = {
+      id: Date.now(),
+      title: title,
+      text: text,
+      date: new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
+    };
+    posts.push(newPost);
+    savePosts(posts);
+
+    titleInput.value = '';
+    textInput.value = '';
+    renderPosts();
+  });
+
+  // Удаление записи по id
+  function deletePost(id) {
+    var oldPosts = loadPosts();
+    var newPosts = [];
+
+    for (var i = 0; i < oldPosts.length; i++) {
+      if (oldPosts[i].id !== id) {
+        newPosts.push(oldPosts[i]);
+      }
+    }
+
+    savePosts(newPosts);
+    renderPosts();
+  }
+
+  // Показываем записи сразу при загрузке страницы
+  renderPosts();
+</script>
+
+</body>
+</html>
