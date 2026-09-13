@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>daily notes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&family=Quicksand:wght@700&display=swap" rel="stylesheet">
 <style>
 body {
   margin: 0;
@@ -68,6 +68,18 @@ main {
   color: #5a5468;
 }
 
+.entry-example {
+  margin: 0.7rem 0 0;
+  padding: 0.55rem 0.75rem;
+  background: #f7f5fa;
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  color: #4a4458;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 </style>
 </head>
 <body>
@@ -79,30 +91,170 @@ main {
 <main id="log"></main>
 
 <script>
-// Добавляй новую запись сверху каждый день — дата в формате YYYY-MM-DD.
-// category: "html" | "css" | "js" | "ts"
 
 const entries = [
   {
-    date: "2026-09-05",
-    category: "js",
-    term: "for...of",
-    note: "Проходит по значениям массива или строки — удобно, когда индекс не нужен."
+    date: "2026-09-01",
+    category: "html",
+    term: "<p>",
+    note: "Парный тег. Абзац текста. Каждый новый <p> браузер начинает с новой строки, с небольшим отступом сверху и снизу.",
+    example: "<p>Привет, мир!</p>"
+  },
+  {
+    date: "2026-09-02",
+    category: "html",
+    term: "<div>",
+    note: "Парный тег. Универсальный блок-контейнер без собственного смысла — нужен, чтобы группировать элементы и стилизовать их вместе.",
+    example: "<div class=\"card\">...</div>"
+  },
+  {
+    date: "2026-09-03",
+    category: "html",
+    term: "<img>",
+    note: "Одиночный тег — закрывающего </img> не бывает. Вставляет картинку. Обязательный атрибут — src (путь к файлу).",
+    example: "<img src=\"cat.jpg\" alt=\"кот\">"
   },
   {
     date: "2026-09-04",
+    category: "html",
+    term: "<b>",
+    note: "Парный тег. Делает текст жирным чисто визуально, без смыслового ударения. Если жирность важна по смыслу — используют <strong>.",
+    example: "<b>жирный текст</b>"
+  },
+  {
+    date: "2026-09-05",
+    category: "html",
+    term: "<i>",
+    note: "Парный тег. Курсив без смыслового ударения. Если курсив важен по смыслу (например, термин) — используют <em>.",
+    example: "<i>курсивный текст</i>"
+  },
+  {
+    date: "2026-09-06",
+    category: "html",
+    term: "<u>",
+    note: "Парный тег. Подчёркивает текст снизу линией.",
+    example: "<u>подчёркнутый текст</u>"
+  },
+  {
+    date: "2026-09-07",
+    category: "html",
+    term: "<section>",
+    note: "Парный тег. Смысловой блок страницы — в отличие от <div>, имеет значение для скринридеров и поисковиков. Обычно содержит свой заголовок.",
+    example: "<section>\n  <h2>О нас</h2>\n</section>"
+  },
+  {
+    date: "2026-09-08",
+    category: "css",
+    term: "color",
+    note: "Свойство. Задаёт цвет текста внутри элемента.",
+    example: "color: hotpink;"
+  },
+  {
+    date: "2026-09-09",
+    category: "css",
+    term: "background",
+    note: "Свойство. Задаёт цвет (или картинку) фона элемента.",
+    example: "background: #f7f5fa;"
+  },
+  {
+    date: "2026-09-10",
+    category: "css",
+    term: "margin",
+    note: "Свойство. Отступ снаружи элемента — расстояние между ним и соседними элементами.",
+    example: "margin: 12px;"
+  },
+  {
+    date: "2026-09-11",
+    category: "css",
+    term: "padding",
+    note: "Свойство. Отступ внутри элемента — расстояние между его рамкой и содержимым.",
+    example: "padding: 1rem;"
+  },
+  {
+    date: "2026-09-12",
+    category: "css",
+    term: "border-radius",
+    note: "Свойство. Скругляет углы элемента. Чем больше значение, тем круглее углы.",
+    example: "border-radius: 14px;"
+  },
+  {
+    date: "2026-09-13",
     category: "css",
     term: "display: flex",
-    note: "Включает гибкую разметку. Помогает выстраивать элементы в ряд или колонку."
+    note: "Свойство-значение. Включает гибкую разметку (flexbox) — помогает быстро выстроить элементы в ряд или колонку.",
+    example: "display: flex;"
+  },
+  {
+    date: "2026-09-14",
+    category: "css",
+    term: "gap",
+    note: "Свойство. Задаёт отступы между элементами flex- или grid-контейнера, не трогая внешние края блока.",
+    example: "display: flex;\ngap: 12px;"
+  },
+  {
+    date: "2026-09-15",
+    category: "js",
+    term: "let",
+    note: "Ключевое слово. Объявляет переменную, значение которой потом можно менять.",
+    example: "let age = 20;"
+  },
+  {
+    date: "2026-09-16",
+    category: "js",
+    term: "const",
+    note: "Ключевое слово. Объявляет переменную, которую нельзя переприсвоить после создания.",
+    example: "const name = \"Аня\";"
+  },
+  {
+    date: "2026-09-17",
+    category: "js",
+    term: "console.log()",
+    note: "Метод. Выводит значение в консоль браузера — способ «подсмотреть», что происходит в коде во время выполнения.",
+    example: "console.log(age);"
+  },
+  {
+    date: "2026-09-18",
+    category: "js",
+    term: "for...of",
+    note: "Конструкция цикла. Проходит по значениям массива или строки — удобно, когда нужен сам элемент, а не его индекс.",
+    example: "for (const letter of \"кот\") {\n  console.log(letter);\n}"
+  },
+  {
+    date: "2026-09-19",
+    category: "js",
+    term: "break",
+    note: "Оператор. Досрочно прерывает цикл целиком.",
+    example: "if (i === 3) break;"
+  },
+  {
+    date: "2026-09-20",
+    category: "js",
+    term: "continue",
+    note: "Оператор. Пропускает текущий шаг цикла и переходит к следующему, не завершая цикл целиком (в отличие от break).",
+    example: "if (i === 2) continue;"
+  },
+  {
+    date: "2026-09-21",
+    category: "ts",
+    term: ": string",
+    note: "Аннотация типа. Говорит компилятору, что переменная может хранить только строку — ошибка подсветится ещё до запуска кода.",
+    example: "let name: string = \"Аня\";"
   }
 ];
 
 </script>
 <script>
 const catNames = { html: "HTML", css: "CSS", js: "JavaScript", ts: "TypeScript" };
-const palette = ["#f28fb0", "#a98ff0", "#5fc9a8", "#f0a95f", "#5fa8e8"];
+const palette = ["#f28fb0", "#a98ff0", "#5ec9c2", "#f2b56b"];
 
 const log = document.getElementById("log");
+
+function esc(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
 
 entries.forEach((e, i) => {
   const card = document.createElement("div");
@@ -110,8 +262,9 @@ entries.forEach((e, i) => {
   card.style.setProperty("--accent", palette[i % palette.length]);
   card.innerHTML = `
     <span class="entry-tag">${catNames[e.category]}</span>
-    <p class="entry-term">${e.term}</p>
-    <p class="entry-note">${e.note}</p>
+    <p class="entry-term">${esc(e.term)}</p>
+    <p class="entry-note">${esc(e.note)}</p>
+    ${e.example ? `<pre class="entry-example">${esc(e.example)}</pre>` : ""}
   `;
   log.appendChild(card);
 });
