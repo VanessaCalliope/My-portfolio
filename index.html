@@ -1,152 +1,445 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
-    <style>
-        body {
-            background-color: #ffffff;
-            color: #000000;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            line-height: 1.6;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Моё портфолио</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,900;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBF4EF;
+    --surface:#FFFFFF;
+    --surface-2:#F3E7E1;
+    --text:#241B2F;
+    --text-soft:#6B5F79;
+    --accent:#6C3CE9;
+    --accent-2:#E8553E;
+    --border:rgba(36,27,47,0.14);
+    --shadow:rgba(108,60,233,0.14);
+    --glow:none;
+  }
+  [data-theme="dark"]{
+    --bg:#0C0D18;
+    --surface:#2A1030;
+    --surface-2:#37123F;
+    --text:#F6ECFF;
+    --text-soft:#CBA6DE;
+    --accent:#FFD36E;
+    --accent-2:#FF3E9A;
+    --border:rgba(255,211,110,0.22);
+    --shadow:rgba(255,62,154,0.25);
+    --glow:0 0 18px rgba(255,62,154,0.4);
+  }
 
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-        }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 85% 0%, var(--surface-2) 0%, transparent 45%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    transition:background 0.6s ease, color 0.4s ease;
+  }
+  html[data-theme="dark"] body{
+    background:
+      radial-gradient(circle at 12% 8%, rgba(246,178,62,0.10) 0%, transparent 30%),
+      radial-gradient(circle at 90% 4%, rgba(255,62,127,0.10) 0%, transparent 35%),
+      radial-gradient(1.5px 1.5px at 20% 15%, rgba(255,255,255,0.5) 50%, transparent 51%) 0 0/140px 140px repeat,
+      radial-gradient(1.5px 1.5px at 70% 60%, rgba(255,255,255,0.35) 50%, transparent 51%) 0 0/180px 180px repeat,
+      radial-gradient(1px 1px at 45% 85%, rgba(255,255,255,0.4) 50%, transparent 51%) 0 0/110px 110px repeat,
+      var(--bg);
+  }
+  html[data-theme="dark2"] body{
+    background:
+      radial-gradient(circle at 12% 8%, rgba(255,211,110,0.10) 0%, transparent 30%),
+      radial-gradient(circle at 90% 4%, rgba(255,62,154,0.14) 0%, transparent 35%),
+      radial-gradient(1.5px 1.5px at 20% 15%, rgba(255,255,255,0.5) 50%, transparent 51%) 0 0/140px 140px repeat,
+      radial-gradient(1.5px 1.5px at 70% 60%, rgba(255,255,255,0.35) 50%, transparent 51%) 0 0/180px 180px repeat,
+      radial-gradient(1px 1px at 45% 85%, rgba(255,255,255,0.4) 50%, transparent 51%) 0 0/110px 110px repeat,
+      var(--bg);
+  }
+  html[data-theme="dark"] h1,
+  html[data-theme="dark"] h2,
+  html[data-theme="dark"] .project h3,
+  html[data-theme="dark"] .brand{
+    background:linear-gradient(100deg, var(--accent) 10%, var(--accent-2) 90%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  html[data-theme="dark"] .lang-list .name{color:var(--accent-2);}
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    margin:0 0 0.4em;
+    letter-spacing:-0.01em;
+  }
+  a{color:var(--accent);}
+  .wrap{max-width:760px; margin:0 auto; padding:0 24px;}
 
-        h1 {
-            font-size: 36px;
-            font-weight: bold;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
+  /* ---------- NAV ---------- */
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px; padding:20px 0;
+    border-bottom:1px solid var(--border);
+  }
+  .brand{font-family:'Fraunces', serif; font-weight:600; font-size:1.05rem;}
+  .nav-links{display:flex; gap:18px; font-size:0.92rem;}
+  .nav-links a{text-decoration:none; color:var(--text-soft); border-bottom:1px solid transparent;}
+  .nav-links a:hover{color:var(--accent); border-color:var(--accent);}
+  .nav-right{display:flex; align-items:center; gap:14px;}
 
-        h2 {
-            font-size: 26px;
-            font-weight: bold;
-            margin-top: 30px;
-            margin-bottom: 12px;
-        }
+  /* stamp-style language switcher */
+  .stamps{display:flex; gap:6px;}
+  .stamp{
+    font-family:'Inter', sans-serif;
+    font-weight:700;
+    font-size:0.72rem;
+    letter-spacing:0.02em;
+    width:38px; height:38px;
+    border-radius:50%;
+    border:1.5px dashed var(--border);
+    background:transparent;
+    color:var(--text-soft);
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:transform 0.25s ease, border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+  }
+  .stamp:nth-child(1){transform:rotate(-6deg);}
+  .stamp:nth-child(2){transform:rotate(3deg);}
+  .stamp:nth-child(3){transform:rotate(-2deg);}
+  .stamp:hover{border-color:var(--accent); color:var(--accent);}
+  .stamp:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .stamp.active{
+    border-style:solid;
+    border-color:var(--accent-2);
+    color:var(--accent-2);
+    background:var(--surface);
+    box-shadow:0 4px 10px var(--shadow), var(--glow);
+  }
+  .stamp.active:nth-child(1){transform:rotate(-6deg) scale(1.08);}
+  .stamp.active:nth-child(2){transform:rotate(3deg) scale(1.08);}
+  .stamp.active:nth-child(3){transform:rotate(-2deg) scale(1.08);}
 
-        h3 {
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 20px;
-            margin-bottom: 8px;
-        }
+  /* theme toggle */
+  .theme-btn{
+    width:38px; height:38px; border-radius:50%;
+    border:1px solid var(--border);
+    background:var(--surface);
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--text);
+    transition:transform 0.4s ease, background 0.3s ease;
+  }
+  .theme-btn:hover{transform:rotate(20deg);}
+  html[data-theme="dark"] .theme-btn, html[data-theme="dark2"] .theme-btn{box-shadow:var(--glow);}
+  html[data-theme="dark"] .hero h1{text-shadow:0 0 22px rgba(246,178,62,0.18);}
+  html[data-theme="dark"] .hero h1{text-shadow:0 0 22px rgba(255,62,154,0.22);}
+  html[data-theme="dark"] .project:hover{border-color:var(--accent-2); box-shadow:0 0 16px rgba(255,62,127,0.14);}
+  html[data-theme="dark"] .project:hover{border-color:var(--accent-2); box-shadow:0 0 16px rgba(255,62,154,0.18);}
+  .theme-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .theme-btn svg{width:18px; height:18px;}
 
-        nav a {
-            color: #1a0dab;
-            text-decoration: underline;
-            margin-right: 16px;
-            font-size: 18px;
-        }
+  /* ---------- HERO ---------- */
+  .hero{padding:56px 0 40px; position:relative;}
+  .hero-eyebrow{
+    font-size:0.85rem; color:var(--text-soft); margin-bottom:6px;
+    min-height:1.3em;
+  }
+  .hero-eyebrow .cursor{
+    display:inline-block; width:2px; height:1em; background:var(--accent);
+    vertical-align:-0.15em; margin-left:2px; animation:blink 1s step-end infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+  .hero h1{
+    font-size:clamp(2rem, 7vw, 2.7rem);
+    font-weight:600;
+    max-width:14ch;
+  }
+  .hero p{color:var(--text-soft); font-size:1.02rem; max-width:42ch;}
 
-        p {
-            font-size: 16px;
-        }
+  /* ---------- SECTIONS ---------- */
+  section{padding:36px 0; border-top:1px solid var(--border);}
+  section h2{font-size:1.4rem; font-weight:600;}
 
-        ul {
-            padding-left: 20px;
-            margin-bottom: 20px;
-        }
+  .tag-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;}
+  .tag{
+    font-size:0.85rem;
+    padding:6px 14px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--text);
+  }
+  .tag.learning{
+    border-style:dashed;
+    color:var(--text-soft);
+    font-style:italic;
+  }
+  .tag-row + .tag-row{margin-top:8px;}
+  .sub-label{font-size:0.8rem; color:var(--text-soft); margin-top:20px;}
 
-        li {
-            margin-bottom: 6px;
-            font-size: 16px;
-        }
+  .lang-list{list-style:none; padding:0; margin:14px 0 0; display:flex; flex-direction:column; gap:10px;}
+  .lang-list li{
+    display:flex; align-items:baseline; justify-content:space-between;
+    padding:10px 14px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+  }
+  .lang-list .name{font-weight:600;}
+  .lang-list .level{color:var(--text-soft); font-size:0.88rem;}
 
-        .project {
-            margin-bottom: 20px;
-        }
+  /* projects */
+  .project{
+    position:relative;
+    padding:20px 20px 20px 54px;
+    margin-top:14px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    transition:border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .project .num{
+    position:absolute; left:14px; top:18px;
+    width:26px; height:26px; border-radius:50%;
+    border:1.5px dashed var(--border);
+    color:var(--text-soft);
+    font-size:0.75rem; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    transform:rotate(-4deg);
+  }
+  .project h3{font-size:1.05rem; margin-bottom:4px;}
+  .project p{margin:0; color:var(--text-soft); font-size:0.94rem;}
+  .project em{color:var(--accent-2); font-style:italic;}
 
-        .status {
-            color: #666666;
-            font-style: italic;
-        }
+  footer{
+    padding:30px 0 50px;
+    text-align:center;
+    font-size:0.82rem;
+    color:var(--text-soft);
+  }
 
-        footer {
-            margin-top: 40px;
-            font-size: 15px;
-        }
-    </style>
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
 </head>
 <body>
+<div class="wrap">
 
-    <div class="container">
-
-        <h1>Моё портфолио</h1>
-
-        <nav>
-            <a href="#about">Обо мне</a>
-            <a href="#projects">Проекты</a>
-        </nav>
-
-        <h2 id="about">Обо мне</h2>
-        <p>Привет! Я начинающий веб-разработчик. Учусь с января 2026 годa.</p>
-
-        <h3>Навыки</h3>
-        <ul>
-            <li>HTML</li>
-            <li>CSS</li>
-            <li>JavaScript</li>
-            <li>Git</li>
-            <li>TypeScript <span class="status">(изучаю)</span></li>
-        </ul>
-
-        <h3>Планирую изучить</h3>
-        <ul>
-            <li>Python</li>
-            <li>C++</li>
-        </ul>
-
-        <h3>Языки</h3>
-        <ul>
-            <li><b>Русский:</b> родной язык</li>
-            <li><b>Турецкий:</b> разговорный уровень</li>
-            <li><b>Английский:</b> уровень A2</li>
-        </ul>
-
-        <h2 id="projects">Мои проекты</h2>
-
-        <div class="project">
-            <h3>Проект 1: <a href="https://vanessacalliope.github.io/My-portfolio/blog.html" target="_blank">Личный блог</a></h3>
-            <p>Создание блога с использованием HTML, CSS и JavaScript.</p>
-        </div>
-
-        <div class="project">
-            <h3>Проект 2: <a href="https://vanessacalliope.github.io/My-portfolio/webinar-form.html" target="_blank">Вебинар</a></h3>
-            <p>Форма регистрации на вебинар.</p>
-        </div>
-
-        <div class="project">
-            <h3>Проект 3: Интернет-магазин</h3>
-            <p>Разработка интернет-магазина с использованием Vue. <span class="status">(в процессе разработки, скоро появится)</span></p>
-        </div>
-
-        <div class="project">
-            <h3>Проект 4: Портфолио</h3>
-            <p>Создание страницы портфолио с использованием HTML и CSS.</p>
-        </div>
-
-        <div class="project">
-            <h3>Проект 5: Сайт кофейни</h3>
-            <p>Адаптивный сайт кофейни с меню, ценами и интерактивной формой быстрого заказа.</p>
-        </div>
-
-        <div class="project">
-            <h3>Проект 6: Мой интерактивный To-Do List</h3>
-            <p>Интерактивный список задач на чистом JavaScript.</p>
-        </div>
-
-        <footer>© 2026 Моё портфолио</footer>
-
+  <nav>
+    <div class="brand" data-i18n="brand">Моё портфолио</div>
+    <div class="nav-right">
+      <div class="stamps" role="group" aria-label="Язык / Language / Dil">
+        <button class="stamp active" data-lang="ru" aria-pressed="true">RU</button>
+        <button class="stamp" data-lang="en" aria-pressed="false">EN</button>
+        <button class="stamp" data-lang="tr" aria-pressed="false">TR</button>
+      </div>
+      <button class="theme-btn" id="themeBtn" aria-label="Сменить тему">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+      </button>
     </div>
+  </nav>
 
+  <section class="hero">
+    <div class="hero-eyebrow" id="greeting">Привет!<span class="cursor"></span></div>
+    <h1 data-i18n="heroTitle">Я начинающий веб-разработчик</h1>
+    <p data-i18n="heroSubtitle">Учусь с января 2026 года.</p>
+  </section>
+
+  <section>
+    <h2 data-i18n="skillsHeading">Навыки</h2>
+    <div class="tag-row">
+      <span class="tag">HTML</span>
+      <span class="tag">CSS</span>
+      <span class="tag">JavaScript</span>
+      <span class="tag">Git</span>
+      <span class="tag">TypeScript <em class="learn-mark" data-i18n="learningTag">(изучаю)</em></span>
+    </div>
+    <div class="sub-label" data-i18n="planHeading">Планирую изучить</div>
+    <div class="tag-row">
+      <span class="tag learning">Python</span>
+      <span class="tag learning">C++</span>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-i18n="langHeading">Языки</h2>
+    <ul class="lang-list">
+      <li><span class="name" data-i18n="langRuName">Русский</span><span class="level" data-i18n="langRuLevel">родной язык</span></li>
+      <li><span class="name" data-i18n="langTrName">Турецкий</span><span class="level" data-i18n="langTrLevel">разговорный уровень</span></li>
+      <li><span class="name" data-i18n="langEnName">Английский</span><span class="level" data-i18n="langEnLevel">уровень A2</span></li>
+    </ul>
+  </section>
+
+  <section id="projects">
+    <h2 data-i18n="projectsHeading">Мои проекты</h2>
+
+    <div class="project"><div class="num">1</div>
+      <h3 data-i18n="p1t">Личный блог</h3>
+      <p data-i18n="p1d">Создание блога с использованием HTML, CSS и JavaScript.</p>
+    </div>
+    <div class="project"><div class="num">2</div>
+      <h3 data-i18n="p2t">Вебинар</h3>
+      <p data-i18n="p2d">Форма регистрации на вебинар.</p>
+    </div>
+    <div class="project"><div class="num">3</div>
+      <h3 data-i18n="p3t">Интернет-магазин</h3>
+      <p data-i18n="p3d">Разработка интернет-магазина с использованием Vue. <em>(в процессе разработки, скоро появится)</em></p>
+    </div>
+    <div class="project"><div class="num">4</div>
+      <h3 data-i18n="p4t">Портфолио</h3>
+      <p data-i18n="p4d">Создание страницы портфолио с использованием HTML и CSS.</p>
+    </div>
+    <div class="project"><div class="num">5</div>
+      <h3 data-i18n="p5t">Сайт кофейни</h3>
+      <p data-i18n="p5d">Адаптивный сайт кофейни с меню, ценами и интерактивной формой быстрого заказа.</p>
+    </div>
+    <div class="project"><div class="num">6</div>
+      <h3 data-i18n="p6t">Мой интерактивный To-Do List</h3>
+      <p data-i18n="p6d">Интерактивный список задач на чистом JavaScript.</p>
+    </div>
+  </section>
+
+  <footer data-i18n="footer">© 2026 Моё портфолио</footer>
+
+</div>
+
+<script>
+const translations = {
+  ru: {
+    lang:"ru", brand:"Моё портфолио", greeting:"Привет!",
+    heroTitle:"Я начинающий веб-разработчик", heroSubtitle:"Учусь с января 2026 года.",
+    skillsHeading:"Навыки", learningTag:"(изучаю)", planHeading:"Планирую изучить",
+    langHeading:"Языки",
+    langRuName:"Русский", langRuLevel:"родной язык",
+    langTrName:"Турецкий", langTrLevel:"разговорный уровень",
+    langEnName:"Английский", langEnLevel:"уровень A2",
+    projectsHeading:"Мои проекты",
+    p1t:"Личный блог", p1d:"Создание блога с использованием HTML, CSS и JavaScript.",
+    p2t:"Вебинар", p2d:"Форма регистрации на вебинар.",
+    p3t:"Интернет-магазин", p3d:'Разработка интернет-магазина с использованием Vue. <em>(в процессе разработки, скоро появится)</em>',
+    p4t:"Портфолио", p4d:"Создание страницы портфолио с использованием HTML и CSS.",
+    p5t:"Сайт кофейни", p5d:"Адаптивный сайт кофейни с меню, ценами и интерактивной формой быстрого заказа.",
+    p6t:"Мой интерактивный To-Do List", p6d:"Интерактивный список задач на чистом JavaScript.",
+    footer:"© 2026 Моё портфолио"
+  },
+  en: {
+    lang:"en", brand:"My Portfolio", greeting:"Hi there!",
+    heroTitle:"I'm a beginner web developer", heroSubtitle:"Learning since January 2026.",
+    skillsHeading:"Skills", learningTag:"(learning)", planHeading:"Planning to learn",
+    langHeading:"Languages",
+    langRuName:"Russian", langRuLevel:"native",
+    langTrName:"Turkish", langTrLevel:"conversational",
+    langEnName:"English", langEnLevel:"A2 level",
+    projectsHeading:"My projects",
+    p1t:"Personal blog", p1d:"Built a blog using HTML, CSS and JavaScript.",
+    p2t:"Webinar", p2d:"Webinar registration form.",
+    p3t:"Online store", p3d:'Building an online store with Vue. <em>(in progress, coming soon)</em>',
+    p4t:"Portfolio", p4d:"Built a portfolio page using HTML and CSS.",
+    p5t:"Coffee shop site", p5d:"Responsive coffee shop site with menu, prices, and an interactive quick-order form.",
+    p6t:"My interactive to-do list", p6d:"Interactive to-do list built in vanilla JavaScript.",
+    footer:"© 2026 My Portfolio"
+  },
+  tr: {
+    lang:"tr", brand:"Portfolyom", greeting:"Merhaba!",
+    heroTitle:"Yeni başlayan bir web geliştiriciyim", heroSubtitle:"Ocak 2026'dan beri öğreniyorum.",
+    skillsHeading:"Yetenekler", learningTag:"(öğreniyorum)", planHeading:"Öğrenmeyi planlıyorum",
+    langHeading:"Diller",
+    langRuName:"Rusça", langRuLevel:"anadil",
+    langTrName:"Türkçe", langTrLevel:"konuşma seviyesi",
+    langEnName:"İngilizce", langEnLevel:"A2 seviyesi",
+    projectsHeading:"Projelerim",
+    p1t:"Kişisel blog", p1d:"HTML, CSS ve JavaScript kullanılarak oluşturulan blog.",
+    p2t:"Webinar", p2d:"Webinar kayıt formu.",
+    p3t:"Online mağaza", p3d:'Vue kullanılarak geliştirilen online mağaza. <em>(yapım aşamasında, yakında)</em>',
+    p4t:"Portföy", p4d:"HTML ve CSS ile oluşturulan portföy sayfası.",
+    p5t:"Kafe sitesi", p5d:"Menü, fiyatlar ve etkileşimli hızlı sipariş formu içeren duyarlı kafe sitesi.",
+    p6t:"Etkileşimli yapılacaklar listem", p6d:"Vanilla JavaScript ile oluşturulan etkileşimli yapılacaklar listesi.",
+    footer:"© 2026 Portfolyom"
+  }
+};
+
+var greetingEl = document.getElementById('greeting');
+var typingTimer = null;
+
+function typeGreeting(text){
+  clearTimeout(typingTimer);
+  greetingEl.innerHTML = '';
+  var cursor = document.createElement('span');
+  cursor.className = 'cursor';
+  var i = 0;
+  function step(){
+    if(i <= text.length){
+      greetingEl.textContent = text.slice(0, i);
+      greetingEl.appendChild(cursor);
+      i = i + 1;
+      typingTimer = setTimeout(step, 55);
+    }
+  }step();
+}
+
+function setLanguage(code){
+  var dict = translations[code];
+  document.documentElement.lang = dict.lang;
+
+  var items = document.querySelectorAll('[data-i18n]');
+  for(var i = 0; i < items.length; i++){
+    var key = items[i].getAttribute('data-i18n');
+    if(key in dict){
+      items[i].innerHTML = dict[key];
+    }
+  }
+
+  typeGreeting(dict.greeting);
+
+  var stamps = document.getElementsByClassName('stamp');
+  for(var j = 0; j < stamps.length; j++){
+    var isActive = stamps[j].getAttribute('data-lang') === code;
+    if(isActive){
+      stamps[j].className = 'stamp active';
+    } else {
+      stamps[j].className = 'stamp';
+    }
+    stamps[j].setAttribute('aria-pressed', isActive);
+  }
+}
+
+var stampButtons = document.getElementsByClassName('stamp');
+for(var k = 0; k < stampButtons.length; k++){
+  stampButtons[k].addEventListener('click', function(event){
+    var code = event.target.getAttribute('data-lang');
+    setLanguage(code);
+  });
+}
+
+/* theme cycle: light -> dark -> dark2 -> light */
+var themeBtn = document.getElementById('themeBtn');
+var themeIcon = document.getElementById('themeIcon');
+var icons = {
+  light: '<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>',
+  dark: '<path d="M21 12.5A8.5 8.5 0 1 1 11.5 3a7 7 0 0 0 9.5 9.5z"></path>',
+  dark2: '<path d="M21 12.5A8.5 8.5 0 1 1 11.5 3a7 7 0 0 0 9.5 9.5z"></path><path d="M18 4l0.6 1.6L20 6.2l-1.4 0.6L18 8.4l-0.6-1.6L16 6.2l1.4-0.6z"></path>'
+};
+var order = ['light', 'dark', 'dark2'];
+
+themeBtn.addEventListener('click', function(){
+  var current = document.documentElement.getAttribute('data-theme');
+  if(!current){
+    current = 'light';
+  }
+  var nextIndex = (order.indexOf(current) + 1) % order.length;
+  var next = order[nextIndex];
+  document.documentElement.setAttribute('data-theme', next);
+  themeIcon.innerHTML = icons[next];
+});
+
+/* initial greeting typewriter on load */
+typeGreeting(translations.ru.greeting);
+</script>
 </body>
 </html>
