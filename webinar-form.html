@@ -1,70 +1,497 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Форма регистрации на вебинар</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вебинар по веб-разработке</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: linear-gradient(160deg, #fdf3ee 0%, #f6e8e6 50%, #efe6f0 100%);
+  --text: #3a2432;
+  --muted: #8a6b7d;
+  --accent: #e85a86;
+  --accent2: #e89a5c;
+  --card: rgba(255, 255, 255, 0.7);
+  --border: rgba(255, 255, 255, 0.85);
+  --shadow: 0 8px 30px rgba(200, 120, 150, 0.12);
+}
+body.dark {
+  --bg: radial-gradient(circle at 20% 0%, #2e1a30 0%, #1a0f22 60%, #0d0714 100%);
+  --text: #f5e3ed;
+  --muted: #b39ac4;
+  --accent: #e85a9a;
+  --accent2: #e8a35c;
+  --card: rgba(70, 40, 70, 0.35);
+  --border: rgba(255, 120, 200, 0.22);
+  --shadow: 0 8px 30px rgba(200, 80, 140, 0.22);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background 0.6s ease, color 0.4s ease;
+  position: relative;
+  overflow-x: hidden;
+}
+body.dark::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 20% 30%, #fff, transparent),
+    radial-gradient(1px 1px at 70% 60%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 40% 80%, #ffd, transparent),
+    radial-gradient(1px 1px at 85% 20%, #fff, transparent);
+  background-size: 600px 600px;
+  opacity: 0.6;
+  pointer-events: none;
+  animation: twinkle 6s infinite alternate;
+}
+@keyframes twinkle { from { opacity: 0.3; } to { opacity: 0.8; } }
+.petals {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle, rgba(220,170,190,0.12) 2px, transparent 3px),
+    radial-gradient(circle, rgba(220,190,170,0.12) 2px, transparent 3px);
+  background-size: 200px 200px, 300px 300px;
+  animation: float 20s linear infinite;
+  z-index: 0;
+}
+@keyframes float { to { background-position: 200px 400px, -200px 600px; } }
+.topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 1.5rem;
+  position: relative; z-index: 2;
+  max-width: 900px; margin: 0 auto;
+}
+.logo { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.2rem; }
+.logo span { color: var(--accent); }
+.controls { display: flex; gap: 0.5rem; }
+.lang, .theme-btn {
+  border: 1.5px dashed var(--muted);
+  background: transparent;
+  color: var(--muted);
+  padding: 0.4rem 0.8rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.8rem;
+  transition: all 0.3s;
+}
+.lang.active, .lang:hover {
+  border-style: solid;
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--card);
+}
+.theme-btn { border-style: solid; border-color: var(--border); background: var(--card); font-size: 1rem; }
+.hero {
+  text-align: center;
+  padding: 4rem 1.5rem 3rem;
+  position: relative; z-index: 1;
+  max-width: 700px; margin: 0 auto;
+}
+.greet { color: var(--accent2); margin-bottom: 0.8rem; font-weight: 700; }
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  line-height: 1.1;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+}
+.sub { color: var(--muted); margin-bottom: 2rem; line-height: 1.6; }
+.cta {
+  display: inline-block;
+  padding: 0.9rem 2rem;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 700;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.cta:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 12px 40px rgba(200,100,140,0.35); }
+.topics { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; position: relative; z-index: 1; }
+.topics h2, .register h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+.card {
+  background: var(--card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s;
+}
+.card:hover { transform: translateY(-5px); }
+.card .icon { font-size: 2rem; margin-bottom: 0.6rem; }
+.card h3 { font-family: 'Playfair Display', serif; margin-bottom: 0.4rem; }
+.card p { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+.register {
+  max-width: 500px; margin: 0 auto;
+  padding: 3rem 1.5rem 4rem;
+  position: relative; z-index: 1;
+}
+form {
+  background: var(--card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+.progress {
+  height: 6px; background: rgba(150,120,140,0.2);
+  border-radius: 10px; margin-bottom: 1.5rem; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; width: 33%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+.step { display: none; animation: fadeIn 0.5s ease; }
+.step.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+label { display: block; margin-bottom: 1.2rem; }
+label > span { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
+input, select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+  background: rgba(255,255,255,0.4);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+body.dark input, body.dark select { background: rgba(255,255,255,0.06); }
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(200,100,140,0.15);
+}
+input.invalid { border-color: #e85a5a; }
+.nav { display: flex; gap: 0.6rem; justify-content: flex-end; margin-top: 1rem; }
+button.prev, button.next, button.submit {
+  padding: 0.7rem 1.4rem;
+  border-radius: 50px;
+  border: none;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+button.prev { background: transparent; color: var(--muted); border: 1.5px solid var(--border); }
+button.next, button.submit {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: #fff;
+  box-shadow: var(--shadow);
+}
+button.next:hover, button.submit:hover { transform: translateY(-2px) scale(1.03); }
+.success { text-align: center; padding: 1rem 0; }
+.success .emoji { font-size: 3rem; margin-bottom: 0.8rem; }
+.success h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 0.5rem; }
+.success p { color: var(--muted); }
+footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; position: relative; z-index: 1; }
+@media (max-width: 500px) {
+  .topbar { padding: 1rem; }
+  .logo { font-size: 1rem; }
+  .lang, .theme-btn { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
+}
+</style>
 </head>
 <body>
 
-    <!-- Шаг 1: Структура формы -->
-    <!-- Форма будет отправлять данные на register.php методом POST -->
-    <form action="register.php" method="POST">
+<div class="petals" aria-hidden="true"></div>
 
-        <!-- Шаг 2: Личные данные -->
-        <fieldset>
-            <legend>Личные данные</legend>
+<header class="topbar">
+  <div class="logo">Моё <span>портфолио</span></div>
+  <div class="controls">
+    <button class="lang active" data-lang="ru">RU</button>
+    <button class="lang" data-lang="en">EN</button>
+    <button class="lang" data-lang="tr">TR</button>
+    <button id="themeToggle" class="theme-btn" aria-label="Сменить тему">🌙</button>
+  </div>
+</header>
 
-            <!-- Поле для имени -->
-            <label for="first_name">Имя:</label>
-            <input type="text" id="first_name" name="first_name" required>
-            <br><br>
+<section class="hero">
+  <p class="greet" data-i18n="greet">Привет!</p>
+  <h1 data-i18n="heroTitle">Бесплатный вебинар по веб-разработке</h1>
+  <p class="sub" data-i18n="heroSub">Для тех, кто только начинает. Разберём HTML, CSS и JavaScript — без скуки и страха.</p>
+  <a href="#register" class="cta" data-i18n="cta">Хочу на вебинар</a>
+</section>
 
-            <!-- Поле для фамилии -->
-            <label for="last_name">Фамилия:</label>
-            <input type="text" id="last_name" name="last_name" required>
-        </fieldset>
+<section class="topics">
+  <h2 data-i18n="topicsTitle">Что будет на вебинаре</h2>
+  <div class="cards">
+    <div class="card">
+      <div class="icon">🌱</div>
+      <h3 data-i18n="topic1">HTML</h3>
+      <p data-i18n="topic1desc">Структура страницы и первые теги.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🎨</div>
+      <h3 data-i18n="topic2">CSS</h3>
+      <p data-i18n="topic2desc">Красивое оформление и цвета.</p>
+    </div>
+    <div class="card">
+      <div class="icon">⚡</div>
+      <h3 data-i18n="topic3">JavaScript</h3>
+      <p data-i18n="topic3desc">Оживляем страницу и добавляем логику.</p>
+    </div>
+  </div>
+</section>
 
-        <br>
+<section class="register" id="register">
+  <h2 data-i18n="regTitle">Регистрация</h2>
 
-        <!-- Шаг 3: Контактная информация -->
-        <!-- Здесь мы добавляем поля для email и телефона -->
-        <fieldset>
-            <legend>Контактная информация</legend>
+  <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
 
-            <!-- Поле для email (обязательно) -->
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <br><br>
+  <form id="regForm" novalidate>
 
-            <!-- Поле для телефона (необязательно) -->
-            <label for="phone">Телефон:</label>
-            <input type="text" id="phone" name="phone">
-        </fieldset>
+    <div class="step active" data-step="1">
+      <label>
+        <span data-i18n="firstName">Имя</span>
+        <input type="text" name="firstName" required placeholder="Аня">
+      </label>
+      <label>
+        <span data-i18n="lastName">Фамилия</span>
+        <input type="text" name="lastName" required placeholder="Иванова">
+      </label>
+      <div class="nav">
+        <button type="button" class="next" data-i18n="next">Дальше →</button>
+      </div>
+    </div>
 
-        <br>
+    <div class="step" data-step="2">
+      <label>
+        <span data-i18n="email">Email</span>
+        <input type="email" name="email" required placeholder="you@example.com">
+      </label>
+      <label>
+        <span data-i18n="phone">Телефон</span>
+        <input type="tel" name="phone" placeholder="+90 555 000 00 00">
+      </label>
+      <div class="nav">
+        <button type="button" class="prev" data-i18n="prev">← Назад</button>
+        <button type="button" class="next" data-i18n="next">Дальше →</button>
+      </div>
+    </div>
 
-        <!-- Шаг 4: Настройки вебинара -->
-        <!-- Здесь пользователь может выбрать тему вебинара -->
-        <fieldset>
-            <legend>Настройки вебинара</legend>
+    <div class="step" data-step="3">
+      <label>
+        <span data-i18n="chooseTopic">Выберите тему вебинара</span>
+        <select name="topic" required>
+          <option value="html" data-i18n="topic1">HTML</option>
+          <option value="css" data-i18n="topic2">CSS</option>
+          <option value="js" data-i18n="topic3">JavaScript</option>
+        </select>
+      </label>
+      <div class="nav">
+        <button type="button" class="prev" data-i18n="prev">← Назад</button>
+        <button type="submit" class="submit" data-i18n="submit">Зарегистрироваться</button>
+      </div>
+    </div>
 
-            <!-- Выпадающий список с темами вебинара -->
-            <label for="topic">Выберите тему вебинара:</label>
-            <select id="topic" name="topic">
-                <option value="html_basics">Основы HTML</option>
-                <option value="html_forms">Формы в HTML</option>
-                <option value="form_validation">Валидация форм</option>
-            </select>
-        </fieldset>
+    <div class="step success" data-step="4">
+      <div class="emoji">🎉</div>
+      <h3 data-i18n="successTitle">Спасибо! Ты в списке</h3>
+      <p data-i18n="successSub">Скоро пришлём детали на почту 💌</p>
+    </div>
 
-        <br>
+  </form>
+</section>
 
-        <!-- Шаг 5: Кнопка отправки -->
-        <!-- Кнопка, которая отправит все данные формы на сервер -->
-        <button type="submit">Зарегистрироваться</button>
+<footer>
+  <p>© 2026 <span data-i18n="footer">Моё портфолио</span></p>
+</footer>
 
-    </form>
+<script>
+/* 🌗 Переключение темы */
+const themeToggle = document.getElementById('themeToggle');
 
+themeToggle.addEventListener('click', function () {
+  document.body.classList.toggle('dark');
+  if (document.body.classList.contains('dark')) {
+    themeToggle.textContent = '☀️';
+  } else {
+    themeToggle.textContent = '🌙';
+  }
+});
+
+/* 🌍 Переводы */
+const translations = {
+  ru: {
+    greet: "Привет!",
+    heroTitle: "Бесплатный вебинар по веб-разработке",
+    heroSub: "Для тех, кто только начинает. Разберём HTML, CSS и JavaScript — без скуки и страха.",
+    cta: "Хочу на вебинар",
+    topicsTitle: "Что будет на вебинаре",
+    topic1: "HTML",
+    topic1desc: "Структура страницы и первые теги.",
+    topic2: "CSS",
+    topic2desc: "Красивое оформление и цвета.",
+    topic3: "JavaScript",
+    topic3desc: "Оживляем страницу и добавляем логику.",
+    regTitle: "Регистрация",
+    firstName: "Имя",
+    lastName: "Фамилия",
+    email: "Email",
+    phone: "Телефон",
+    chooseTopic: "Выберите тему вебинара",
+    next: "Дальше →",
+    prev: "← Назад",
+    submit: "Зарегистрироваться",
+    successTitle: "Спасибо! Ты в списке",
+    successSub: "Скоро пришлём детали на почту 💌",
+    footer: "Моё портфолио"
+  },
+  en: {
+    greet: "Hi!",
+    heroTitle: "Free Web Development Webinar",
+    heroSub: "For absolute beginners. We'll cover HTML, CSS and JavaScript — no boredom, no fear.",
+    cta: "Join the webinar",
+    topicsTitle: "What you'll learn",
+    topic1: "HTML",
+    topic1desc: "Page structure and your first tags.",
+    topic2: "CSS",
+    topic2desc: "Beautiful styling and colors.",
+    topic3: "JavaScript",
+    topic3desc: "Bringing the page to life with logic.",
+    regTitle: "Registration",
+    firstName: "First name",
+    lastName: "Last name",
+    email: "Email",
+    phone: "Phone",
+    chooseTopic: "Choose a webinar topic",
+    next: "Next →",
+    prev: "← Back",
+    submit: "Register",
+    successTitle: "Thank you! You're in",
+    successSub: "We'll send the details to your email 💌",
+    footer: "My portfolio"
+  },
+  tr: {
+    greet: "Merhaba!",
+    heroTitle: "Ücretsiz Web Geliştirme Webinarı",
+    heroSub: "Yeni başlayanlar için. HTML, CSS ve JavaScript — sıkılmadan ve korkmadan.",
+    cta: "Webinara katıl",
+    topicsTitle: "Webinarda neler var",
+    topic1: "HTML",
+    topic1desc: "Sayfa yapısı ve ilk etiketler.",
+    topic2: "CSS",
+    topic2desc: "Güzel stil ve renkler.",
+    topic3: "JavaScript",
+    topic3desc: "Sayfayı mantıkla canlandırmak.",
+    regTitle: "Kayıt",
+    firstName: "Ad",
+    lastName: "Soyad",
+    email: "E-posta",
+    phone: "Telefon",
+    chooseTopic: "Webinar konusunu seç",
+    next: "İleri →",
+    prev: "← Geri",
+    submit: "Kayıt ol",
+    successTitle: "Teşekkürler! Listedesin",
+    successSub: "Detayları e-postana göndereceğiz 💌",
+    footer: "Portföyüm"
+  }
+};
+
+/* 🌍 Переключение языка */
+const langButtons = document.querySelectorAll('.lang');
+
+langButtons.forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    const lang = btn.dataset.lang;
+
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      const key = el.dataset.i18n;
+      if (translations[lang][key]) {
+        el.textContent = translations[lang][key];
+      }
+    });
+
+    langButtons.forEach(function (b) {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+
+    document.documentElement.lang = lang;
+  });
+});
+
+/* 📝 Шаги формы */
+const form = document.getElementById('regForm');
+const steps = document.querySelectorAll('.step');
+const progressFill = document.getElementById('progressFill');
+let currentStep = 1;
+
+function showStep(n) {
+  steps.forEach(function (s) {
+    s.classList.toggle('active', Number(s.dataset.step) === n);
+  });
+  progressFill.style.width = Math.min((n / 3) * 100, 100) + '%';
+  currentStep = n;
+  window.scrollTo({ top: document.getElementById('register').offsetTop - 40, behavior: 'smooth' });
+}
+
+form.addEventListener('click', function (e) {
+  if (e.target.classList.contains('next')) {
+    if (validateStep(currentStep)) {
+      showStep(currentStep + 1);
+    }
+  }
+  if (e.target.classList.contains('prev')) {
+    showStep(currentStep - 1);
+  }
+});
+
+/* ✅ Проверка полей */
+function validateStep(step) {
+  let valid = true;
+  const current = document.querySelector('.step[data-step="' + step + '"]');
+  if (!current) return true;
+
+  const inputs = current.querySelectorAll('input[required], select[required]');
+  inputs.forEach(function (input) {
+    input.classList.remove('invalid');
+
+    const isEmpty = input.value.trim() === '';
+    const isBadEmail = input.type === 'email' && !/^\S+@\S+\.\S+$/.test(input.value);
+
+    if (isEmpty || isBadEmail) {
+      input.classList.add('invalid');
+      valid = false;
+    }
+  });
+  return valid;
+}
+
+/* 🎉 Отправка формы */
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  if (!validateStep(3)) return;
+  showStep(4);
+  progressFill.style.width = '100%';
+});
+</script>
 </body>
-  </html>
+</html>
