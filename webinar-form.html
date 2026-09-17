@@ -270,11 +270,11 @@ footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85
     <div class="step active" data-step="1">
       <label>
         <span data-i18n="firstName">Имя</span>
-        <input type="text" name="firstName" required placeholder="Аня">
+        <input type="text" name="firstName" required placeholder="Аня" data-i18n-placeholder="firstNamePlaceholder">
       </label>
       <label>
         <span data-i18n="lastName">Фамилия</span>
-        <input type="text" name="lastName" required placeholder="Иванова">
+        <input type="text" name="lastName" required placeholder="Иванова" data-i18n-placeholder="lastNamePlaceholder">
       </label>
       <div class="nav">
         <button type="button" class="next" data-i18n="next">Дальше →</button>
@@ -353,7 +353,9 @@ const translations = {
     topic3desc: "Оживляем страницу и добавляем логику.",
     regTitle: "Регистрация",
     firstName: "Имя",
+    firstNamePlaceholder: "Аня",
     lastName: "Фамилия",
+    lastNamePlaceholder: "Иванова",
     email: "Email",
     phone: "Телефон",
     chooseTopic: "Выберите тему вебинара",
@@ -378,7 +380,9 @@ const translations = {
     topic3desc: "Bringing the page to life with logic.",
     regTitle: "Registration",
     firstName: "First name",
+    firstNamePlaceholder: "Jane",
     lastName: "Last name",
+    lastNamePlaceholder: "Smith",
     email: "Email",
     phone: "Phone",
     chooseTopic: "Choose a webinar topic",
@@ -403,7 +407,9 @@ const translations = {
     topic3desc: "Sayfayı mantıkla canlandırmak.",
     regTitle: "Kayıt",
     firstName: "Ad",
+    firstNamePlaceholder: "Ayşe",
     lastName: "Soyad",
+    lastNamePlaceholder: "Yılmaz",
     email: "E-posta",
     phone: "Telefon",
     chooseTopic: "Webinar konusunu seç",
@@ -427,6 +433,13 @@ langButtons.forEach(function (btn) {
       const key = el.dataset.i18n;
       if (translations[lang][key]) {
         el.textContent = translations[lang][key];
+      }
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
+      const key = el.dataset.i18nPlaceholder;
+      if (translations[lang][key]) {
+        el.setAttribute('placeholder', translations[lang][key]);
       }
     });
 
