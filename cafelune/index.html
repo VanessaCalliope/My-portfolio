@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cafélune — café au clair de lune</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,600&family=Caveat&family=Karla&display=swap" rel="stylesheet">
+<style>
+  /* ===================== ОБЩЕЕ ===================== */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Karla', sans-serif;
+    background: #FBF7F2;
+    color: #3A2E3F;
+    overflow-x: hidden;
+    transition: background 1s ease;
+  }
+
+  /* ===================== ГЛАВНЫЙ ЭКРАН ===================== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(circle at 50% 30%, #EDE7F2 0%, #FBF7F2 70%);
+    padding: 2rem;
+  }
+
+  .hero-sub {
+    font-family: 'Caveat', cursive;
+    color: #C9A88C;
+    font-size: 1.4rem;
+    margin-bottom: .6rem;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(3rem, 8vw, 6rem);
+    letter-spacing: .02em;
+  }
+
+  .hero-tag {
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    margin: 1rem 0 2rem;
+    color: #8A7A8C;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: .9rem 2.2rem;
+    background: #F2D5D5;
+    color: #3A2E3F;
+    border-radius: 999px;
+    text-decoration: none;
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    transition: .4s ease;
+    box-shadow: 0 8px 24px rgba(201, 139, 139, .18);
+    border: none;
+    cursor: pointer;
+  }
+  .btn:hover {
+    background: #C98B8B;
+    color: #FBF7F2;
+    transform: translateY(-3px);
+  }
+
+  /* ===================== МЕНЮ ===================== */
+  .menu {
+    padding: 6rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .menu h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .menu-sub {
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    color: #C9A88C;
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.6rem;
+  }
+
+  .card {
+    background: #FFFFFF;
+    border: 1px solid #F2D5D5;
+    border-radius: 24px;
+    padding: 2rem 1.6rem;
+    transition: .5s ease;
+    box-shadow: 0 10px 30px rgba(58, 46, 63, .05);
+    text-align: center;
+  }
+  .card:hover {
+    transform: translateY(-6px) rotate(-1deg);
+    box-shadow: 0 20px 50px rgba(201, 139, 139, .2);
+  }
+
+  .card .emoji {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: .8rem;
+  }
+
+  .card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.7rem;
+    margin-bottom: .6rem;
+  }
+
+  .card p {
+    font-size: .95rem;
+    line-height: 1.6;
+    color: #6A5D6E;
+  }
+
+  .card .price {
+    display: block;
+    margin-top: 1.2rem;
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    color: #C98B8B;
+  }
+
+  .card .pick {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: .7rem 1.8rem;
+    background: #3A2E3F;
+    color: #FBF7F2;
+    border: none;
+    border-radius: 999px;
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: .4s ease;
+  }
+  .card .pick:hover {
+    background: #C98B8B;
+    transform: translateY(-2px);
+  }
+
+  /* Акцентная карточка — Тарт Полнолуние */
+  .card-star {
+    background: linear-gradient(160deg, #3A2E3F 0%, #5C4A63 100%);
+    border-color: #E8C89A;
+  }
+  .card-star h3, .card-star p { color: #FBF7F2; }
+  .card-star .price { color: #E8C89A; }
+  .card-star .pick {
+    background: #E8C89A;
+    color: #3A2E3F;
+  }
+  .card-star .pick:hover {
+    background: #FBF7F2;
+  }
+
+  /* ===================== ФОРМА ЗАКАЗА ===================== */
+  .order {
+    padding: 6rem 2rem;
+    background: #F2D5D5;
+  }
+  .order-inner {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .order h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: 1rem;
+    color: #3A2E3F;
+  }
+  .order p {
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: #6A5D6E;
+    margin-bottom: 2rem;
+  }
+
+  .order form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .order input {
+    padding: 1rem 1.4rem;
+    border: 1px solid #FFFFFF;
+    border-radius: 16px;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+    background: #FFFFFF;
+    color: #3A2E3F;
+    outline: none;
+    transition: .3s ease;
+  }
+  .order input:focus {
+    border-color: #C98B8B;
+    box-shadow: 0 0 0 3px rgba(201, 139, 139, .15);
+  }
+
+  .order button {
+    padding: 1.1rem;
+    background: #3A2E3F;
+    color: #FBF7F2;
+    border: none;
+    border-radius: 999px;
+    font-family: 'Caveat', cursive;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: .4s ease;
+  }
+  .order button:hover {
+    background: #C98B8B;
+    transform: translateY(-3px);
+  }
+
+  /* ===================== ПОДВАЛ ===================== */
+  .footer {
+    text-align: center;
+    padding: 3rem 1rem;
+    font-family: 'Caveat', cursive;
+    color: #C9A88C;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ГЛАВНЫЙ ЭКРАН -->
+  <header class="hero">
+    <p class="hero-sub">café au clair de lune</p>
+    <h1>Cafélune</h1>
+    <p class="hero-tag">Кафе при лунном свете 🌙</p>
+    <a href="#menu" class="btn">Заглянуть внутрь</a>
+  </header>
+
+  <!-- МЕНЮ -->
+  <section id="menu" class="menu">
+    <h2>Menu de la Lune</h2>
+    <p class="menu-sub">— кофе и десерты на каждый день —</p>
+
+    <div class="menu-grid">
+      <article class="card">
+        <span class="emoji">☕</span>
+        <h3>Эспрессо</h3>
+        <p>Крепкий, густой, без лишнего. Классика на 30 мл.</p>
+        <span class="price">180 ₽</span>
+        <button class="pick" data-name="Эспрессо">Выбрать</button>
+      </article>
+
+      <article class="card">
+        <span class="emoji">🥛</span>
+        <h3>Капучино</h3>
+        <p>Эспрессо с плотной молочной пеной. Мягкий и тёплый.</p>
+        <span class="price">240 ₽</span>
+        <button class="pick" data-name="Капучино">Выбрать</button>
+      </article>
+
+      <article class="card">
+        <span class="emoji">🍫</span>
+        <h3>Мокко</h3>
+        <p>Кофе с шоколадом. Сладко, но не приторно.</p>
+        <span class="price">280 ₽</span>
+        <button class="pick" data-name="Мокко">Выбрать</button>
+      </article>
+
+      <article class="card">
+        <span class="emoji">🍶</span>
+        <h3>Латте</h3>
+        <p>Много молока, мягкий вкус. На каждый день.</p>
+        <span class="price">260 ₽</span>
+        <button class="pick" data-name="Латте">Выбрать</button>
+      </article>
+
+      <article class="card">
+        <span class="emoji">🍰</span>
+        <h3>Чизкейк</h3>
+        <p>Сливочный, на песочной основе. С ягодным соусом.</p>
+        <span class="price">320 ₽</span>
+        <button class="pick" data-name="Чизкейк">Выбрать</button>
+      </article>
+
+      <article class="card">
+        <span class="emoji">🥐</span>
+        <h3>Круассан</h3>
+        <p>Слоёный, хрустящий снаружи, мягкий внутри.</p>
+        <span class="price">200 ₽</span>
+        <button class="pick" data-name="Круассан">Выбрать</button>
+      </article>
+
+      <article class="card card-star">
+        <span class="emoji">🌙</span>
+        <h3>Тарт Полнолуние</h3>
+        <p>Тарт с карамелью и шоколадной глазурью в форме полумесяца. Наш акцент.</p>
+        <span class="price">380 ₽</span>
+        <button class="pick" data-name="Тарт Полнолуние">Выбрать</button>
+      </article>
+    </div>
+  </section>
+
+  <!-- ФОРМА ЗАКАЗА -->
+  <section class="order" id="order">
+    <div class="order-inner">
+      <h2>Оформить быстрый заказ</h2>
+      <p>Заполните форму, и мы приготовим ваш заказ к приходу ✨</p>
+
+      <form id="orderForm">
+        <input type="text" id="orderItem" placeholder="Ваш заказ" readonly>
+        <input type="text" id="name" placeholder="Ваше имя" required>
+        <input type="tel" id="phone" placeholder="Номер телефона" required>
+        <button type="submit">Подтвердить заказ ✨</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ПОДВАЛ -->
+  <footer class="footer">
+    <p>Cafélune ✦ кофе и десерты ✦ 2026</p>
+  </footer>
+
+<script>
+  /* ============ 🌙 НАСТРОЕНИЕ ПО ВРЕМЕНИ СУТОК ============ */
+  const hour = new Date().getHours();
+  if (hour >= 20 || hour < 6) {
+    document.body.style.background = '#EDE7F2';
+  }
+
+  /* ============ 🍒 КНОПКА «ВЫБРАТЬ» ============ */
+  const orderItem = document.getElementById('orderItem');
+  const orderSection = document.getElementById('order');
+
+  document.querySelectorAll('.pick').forEach(btn => {
+    btn.addEventListener('click', () => {
+      // подставляем название в поле заказа
+      orderItem.value = btn.dataset.name;
+      // плавно прокручиваем к форме
+      orderSection.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  /* ============ ✨ ПОДТВЕРЖДЕНИЕ ЗАКАЗА ============ */
+  const form = document.getElementById('orderForm');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault(); // не перезагружаем страницу
+
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const item = orderItem.value;
+
+    if (!item) {
+      alert('Сначала выберите что-нибудь из меню 🍒');
+      return;
+    }
+
+    alert(`Спасибо, ${name}! Ваш заказ «${item}» принят. Мы позвоним по номеру ${phone} 🌙`);
+    form.reset();
+    orderItem.value = '';
+  });
+</script>
+
+</body>
+  </html>
