@@ -186,17 +186,14 @@
 </div>
 
 <script>
-  // Ключ, под которым храним массив записей в localStorage
   var STORAGE_KEY = 'my-blog-posts';
 
-  // Достаём элементы со страницы один раз
   var titleInput = document.getElementById('titleInput');
   var textInput = document.getElementById('textInput');
   var publishBtn = document.getElementById('publishBtn');
   var errorMsg = document.getElementById('errorMsg');
   var postsList = document.getElementById('postsList');
 
-  // Читаем записи из localStorage
   function loadPosts() {
     var raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
@@ -206,24 +203,20 @@
     }
   }
 
-  // Сохраняем массив записей обратно в localStorage
   function savePosts(posts) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
   }
 
-  // Защита от того, чтобы текст записи не сломал HTML-разметку
   function escapeHtml(str) {
     var div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
   }
 
-  // Отрисовываем список записей на странице
   function renderPosts() {
     var posts = loadPosts();
     var html = '';
 
-    // идём по массиву с конца в начало, чтобы новые записи были сверху
     for (var i = posts.length - 1; i >= 0; i--) {
       var post = posts[i];
       html += '<div class="post">';
@@ -239,7 +232,6 @@
     postsList.innerHTML = html;
   }
 
-  // Обработчик кнопки "Опубликовать"
   publishBtn.addEventListener('click', function () {
     var title = titleInput.value.trim();
     var text = textInput.value.trim();
@@ -265,7 +257,6 @@
     renderPosts();
   });
 
-  // Удаление записи по id
   function deletePost(id) {
     var oldPosts = loadPosts();
     var newPosts = [];
@@ -280,7 +271,6 @@
     renderPosts();
   }
 
-  // Показываем записи сразу при загрузке страницы
   renderPosts();
 </script>
 
