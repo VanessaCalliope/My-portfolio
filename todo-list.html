@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Список дел</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F6F1E9; --ink: #211D1A; --muted: #8C8377; --accent: #7A2E3D; --line: #E1D6C0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    display: flex; justify-content: center;
+    padding: 15vh 24px 60px;
+  }
+  .sheet { width: 100%; max-width: 400px; }
+  h1 {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500;
+    font-size: 2.6rem; margin: 0 0 4px; line-height: 1;
+  }
+  .count { color: var(--muted); font-size: 0.85rem; margin: 0 0 28px; }
+  form { display: flex; border-bottom: 1px solid var(--ink); margin-bottom: 34px; }
+  input {
+    flex: 1; border: none; background: none; outline: none;
+    color: var(--ink); font-family: 'Inter', sans-serif; font-size: 1rem; padding: 8px 0;
+  }
+  input::placeholder { color: var(--muted); }
+  form button {
+    border: none; background: none; color: var(--muted);
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; cursor: pointer;
+  }
+  form button:hover { color: var(--accent); }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li {
+    display: flex; align-items: baseline; gap: 14px;
+    padding: 14px 0; border-bottom: 1px solid var(--line);
+  }
+  .num { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--muted); width: 1.2em; }
+  .text { flex: 1; cursor: pointer; position: relative; }
+  .text::after {
+    content: ''; position: absolute; left: 0; top: 51%; height: 1px; width: 0;
+    background: var(--accent); transition: width 0.4s ease;
+  }
+  li.done .text { color: var(--muted); }
+  li.done .text::after { width: 100%; }
+  .del { border: none; background: none; color: var(--line); cursor: pointer; }
+  li:hover .del { color: var(--muted); }
+  .del:hover { color: var(--accent); }
+  .empty { color: var(--muted); font-style: italic; font-family: 'Cormorant Garamond', serif; padding: 20px 0; }
+  @media (prefers-reduced-motion: reduce) { * { transition-duration: 0.001ms !important; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Сегодня</h1>
+  <p class="count" id="count"></p>
+  <form id="form">
+    <input id="input" placeholder="добавить дело…" maxlength="120" autocomplete="off">
+    <button>добавить</button>
+  </form>
+  <ul id="list"></ul>
+</div>
+
+<script>
+  let tasks = JSON.parse(localStorage.getItem('todos') || '[]');
+  const list = document.getElementById('list');
+  const count = document.getElementById('count');
+
+  function render() {
+    localStorage.setItem('todos', JSON.stringify(tasks));
+    list.innerHTML = tasks.length ? '' : '<li class="empty">Список пуст — начните с первого дела</li>';
+
+    tasks.forEach((t, i) => {
+      const li = document.createElement('li');
+      li.className = t.done ? 'done' : '';
+      li.innerHTML = `<span class="num">${i + 1}</span><span class="text"></span><button class="del">✕</button>`;
+      li.querySelector('.text').textContent = t.text;
+      li.querySelector('.text').onclick = () => { t.done = !t.done; render(); };
+      li.querySelector('.del').onclick = () => { tasks.splice(i, 1); render(); };
+      list.appendChild(li);
+    });
+
+    const done = tasks.filter(t => t.done).length;
+    count.textContent = tasks.length ? `${done} из ${tasks.length} выполнено` : '';
+  }
+
+  document.getElementById('form').onsubmit = e => {
+    e.preventDefault();
+    const input = document.getElementById('input');
+    if (!input.value.trim()) return;
+    tasks.push({ text: input.value.trim(), done: false });
+    input.value = '';
+    render();
+  };
+
+  render();
+</script>
+</body>
+</html>
