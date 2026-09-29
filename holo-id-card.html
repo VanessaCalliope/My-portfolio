@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Holo ID — короткий код</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{ --violet:#8b5cf6; --cyan:#2dd4ea; --pink:#f472b6; --paper:#eceaf4;
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); }
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; margin:0; }
+  body{ min-height:100%; background:radial-gradient(circle at 50% 20%, #14121f 0%, #07070c 60%);
+    font-family:'Space Grotesk', sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    color:var(--paper); padding:28px 16px; overflow-x:hidden; }
+  canvas{ position:fixed; inset:0; pointer-events:none; }
+  .eyebrow{ font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.3em; color:var(--cyan);
+    text-transform:uppercase; margin-bottom:14px; opacity:0; transition:opacity .6s; }
+  h1{ font-size:clamp(1.5rem,6vw,2.4rem); margin:0 0 40px; text-align:center; }
+  .stage{ perspective:1400px; }
+  .card{ width:300px; max-width:82vw; aspect-ratio:16/10; border-radius:18px; position:relative;
+    background:linear-gradient(135deg,#15131f,#1c1a2b); box-shadow:0 30px 60px -20px rgba(0,0,0,.7);
+    padding:22px; display:flex; flex-direction:column; justify-content:space-between;
+    opacity:0; transition:opacity .8s, transform .2s ease-out; }
+  .foil{ position:absolute; inset:0; border-radius:18px;
+    background:linear-gradient(115deg,transparent 20%,rgba(139,92,246,.35) 35%,rgba(45,212,234,.35) 50%,rgba(244,114,182,.35) 65%,transparent 80%);
+    background-size:250% 250%; mix-blend-mode:screen; pointer-events:none; transition:background-position .2s ease-out; }
+  .row{ display:flex; justify-content:space-between; }
+  .chip{ width:36px; height:26px; border-radius:6px; background:linear-gradient(135deg,#d8c9ff,#8b5cf6 60%,#2dd4ea); }
+  .role{ font-family:'JetBrains Mono', monospace; font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--cyan); text-align:right; }
+  .name{ font-size:1.3rem; font-weight:700; margin:0 0 4px; }
+  .tagline{ font-family:'JetBrains Mono', monospace; font-size:.68rem; color:#a9a6c2; margin:0; }
+  .hint{ margin-top:32px; font-family:'JetBrains Mono', monospace; font-size:.68rem; color:#5b5875; opacity:0; transition:opacity .6s; }
+  .show{ opacity:1 !important; }
+</style>
+</head>
+<body>
+  <canvas id="particles"></canvas>
+  <p class="eyebrow" id="eyebrow">// identity verified</p>
+  <h1 id="scramble"></h1>
+  <div class="stage">
+    <div class="card" id="card">
+      <div class="foil" id="foil"></div>
+      <div class="row">
+        <div class="chip"></div>
+        <div class="role">Developer<br>Access</div>
+      </div>
+      <div>
+        <p class="name">V. ACCESS CARD</p>
+        <p class="tagline">HTML · CSS · JS — LEVEL: RISING</p>
+      </div>
+    </div>
+  </div>
+  <p class="hint" id="hint">двигай мышкой / пальцем по карте</p>
+
+<script>
+  // --- 1. Сборка текста из случайных символов ---
+  const text = "VANESSA · FRONTEND";
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&";
+  const scrambleEl = document.getElementById('scramble');
+  let revealed = 0;
+
+  const scrambleTimer = setInterval(() => {
+    scrambleEl.textContent = [...text].map((ch, i) =>
+      ch === " " || ch === "·" ? ch :
+      i < revealed ? ch : chars[Math.random() * chars.length | 0]
+    ).join('');
+    revealed++;
+    if (revealed > text.length) clearInterval(scrambleTimer);
+  }, 70);
+
+  // --- 2. Появление элементов ---
+  setTimeout(() => eyebrow.classList.add('show'), 200);
+  setTimeout(() => card.classList.add('show'), 1300);
+  setTimeout(() => hint.classList.add('show'), 2100);
+
+  // --- 3. Наклон карты + сдвиг фольги, 4. Частицы (общий обработчик движения) ---
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  const colors = ['#8b5cf6', '#2dd4ea', '#f472b6'];
+  let particles = [];
+  const resize = () => { canvas.width = innerWidth; canvas.height = innerHeight; };
+  resize(); addEventListener('resize', resize);
+
+  function onMove(x, y) {
+    const r = card.getBoundingClientRect();
+    const relX = (x - r.left) / r.width, relY = (y - r.top) / r.height;
+    card.style.transform = `rotateX(${(0.5 - relY) * 26}deg) rotateY(${(relX - 0.5) * 26}deg)`;
+    foil.style.backgroundPosition = `${relX * 100}% ${relY * 100}%`;
+
+    for (let i = 0; i < 2; i++) particles.push({
+      x, y, vx: (Math.random() - 0.5) * 1.2, vy: (Math.random() - 0.5) * 1.2 - 0.4,
+      life: 1, size: Math.random() * 3 + 1.5, color: colors[Math.random() * colors.length | 0]
+    });
+  }
+  addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
+  addEventListener('touchmove', e => onMove(e.touches[0].clientX, e.touches[0].clientY), {passive:true});
+  addEventListener('mouseleave', () => card.style.transform = '');
+  addEventListener('touchend', () => card.style.transform = '');
+
+  (function animate(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.life -= 0.018;
+      ctx.globalAlpha = Math.max(p.life, 0);
+      ctx.fillStyle = p.color;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+    particles = particles.filter(p => p.life > 0);
+    requestAnimationFrame(animate);
+  })();
+</script>
+</body>
+</html>
