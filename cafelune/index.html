@@ -2,19 +2,53 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cafélune — café au clair de lune</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,600&family=Caveat&family=Karla&display=swap" rel="stylesheet">
 <style>
-  
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+
   body {
-    font-family: 'Karla', sans-serif;
+    font-family: 'Karla', 'Segoe UI', Arial, sans-serif;
     background: #FBF7F2;
     color: #3A2E3F;
     overflow-x: hidden;
     transition: background 1s ease;
+  }
+
+  /* ===== ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ ===== */
+  .lang-switch {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: calc(env(safe-area-inset-top, 0px) + .8rem) 1rem 0 0;
+    display: flex;
+    gap: .4rem;
+    z-index: 10;
+  }
+  .lang-btn {
+    padding: .35rem .9rem;
+    background: rgba(255, 255, 255, .8);
+    color: #3A2E3F;
+    border: 1px solid #F2D5D5;
+    border-radius: 999px;
+    font-family: 'Caveat', cursive, sans-serif;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: .3s ease;
+  }
+  .lang-btn:hover { background: #F2D5D5; }
+  .lang-btn.active {
+    background: #3A2E3F;
+    color: #FBF7F2;
+    border-color: #3A2E3F;
   }
 
   .hero {
@@ -36,7 +70,7 @@
   }
 
   .hero h1 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Cormorant Garamond', Georgia, serif;
     font-style: italic;
     font-size: clamp(3rem, 8vw, 6rem);
     letter-spacing: .02em;
@@ -76,7 +110,7 @@
   }
 
   .menu h2 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Cormorant Garamond', Georgia, serif;
     font-style: italic;
     font-size: clamp(2rem, 5vw, 3.4rem);
     text-align: center;
@@ -118,7 +152,7 @@
   }
 
   .card h3 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Cormorant Garamond', Georgia, serif;
     font-style: italic;
     font-size: 1.7rem;
     margin-bottom: .6rem;
@@ -181,7 +215,7 @@
     text-align: center;
   }
   .order h2 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Cormorant Garamond', Georgia, serif;
     font-style: italic;
     font-size: clamp(2rem, 5vw, 3rem);
     margin-bottom: 1rem;
@@ -204,7 +238,7 @@
     padding: 1rem 1.4rem;
     border: 1px solid #FFFFFF;
     border-radius: 16px;
-    font-family: 'Karla', sans-serif;
+    font-family: 'Karla', 'Segoe UI', Arial, sans-serif;
     font-size: 1rem;
     background: #FFFFFF;
     color: #3A2E3F;
@@ -238,78 +272,283 @@
     font-family: 'Caveat', cursive;
     color: #C9A88C;
   }
+
+  /* ===== КНОПКА ТЕМЫ ===== */
+  .theme-btn {
+    padding: .2rem .7rem;
+    background: rgba(255, 255, 255, .8);
+    border: 1px solid #F2D5D5;
+    border-radius: 999px;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: .3s ease;
+  }
+  .theme-btn:hover { background: #F2D5D5; }
+
+  /* ===== 🌙 ТЁМНАЯ ТЕМА ===== */
+  html[data-theme="dark"] body { background: #1F1826; color: #F3ECF5; }
+  html[data-theme="dark"] .hero { background: radial-gradient(circle at 50% 30%, #3A2E3F 0%, #1F1826 70%); }
+  html[data-theme="dark"] .hero-tag { color: #B9AABF; }
+  html[data-theme="dark"] .btn { background: #4A3B52; color: #FBF7F2; box-shadow: 0 8px 24px rgba(0, 0, 0, .35); }
+  html[data-theme="dark"] .btn:hover { background: #C98B8B; }
+
+  html[data-theme="dark"] .card { background: #2B2233; border-color: #4A3B52; box-shadow: 0 10px 30px rgba(0, 0, 0, .3); }
+  html[data-theme="dark"] .card:hover { box-shadow: 0 20px 50px rgba(201, 139, 139, .25); }
+  html[data-theme="dark"] .card p { color: #BDB0C2; }
+  html[data-theme="dark"] .card .pick { background: #F2D5D5; color: #3A2E3F; }
+  html[data-theme="dark"] .card .pick:hover { background: #C98B8B; color: #FBF7F2; }
+
+  /* карточка-акцент (после общих правил карточек, чтобы не перебивались) */
+  /* 💎 Тарт Полнолуние: карточка-кристалл: аметист с лунным золотом */
+  html[data-theme="dark"] .card-star {
+    position: relative;
+    overflow: hidden; /* чтобы искорки не вылезали за края */
+    background: linear-gradient(160deg, #2B1F3D 0%, #4A3570 55%, #5A3A6B 100%);
+    border: 1px solid rgba(242, 190, 220, .7);
+    box-shadow:
+      0 0 18px rgba(232, 150, 200, .35),
+      0 0 50px rgba(232, 150, 200, .18),
+      inset 0 0 28px rgba(242, 190, 220, .15);
+    animation: crystal-pulse 4s ease-in-out infinite;
+  }
+
+  /* мягкое «дыхание» свечения */
+  @keyframes crystal-pulse {
+    0%, 100% {
+      box-shadow: 0 0 14px rgba(232, 150, 200, .30), 0 0 40px rgba(232, 150, 200, .15), inset 0 0 24px rgba(242, 190, 220, .12);
+    }
+    50% {
+      box-shadow: 0 0 26px rgba(232, 150, 200, .55), 0 0 70px rgba(232, 150, 200, .28), inset 0 0 34px rgba(242, 190, 220, .22);
+    }
+  }
+
+  /* искорки, как светлячки в пещере на фото, только золотые, как луна */
+  html[data-theme="dark"] .card-star::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(circle at 12% 18%, #FFE9C2 0 1.5px, transparent 2.5px),
+      radial-gradient(circle at 82% 12%, #FFE9C2 0 1px, transparent 2px),
+      radial-gradient(circle at 66% 34%, #FFE9C2 0 1.5px, transparent 2.5px),
+      radial-gradient(circle at 25% 52%, #FFE9C2 0 1px, transparent 2px),
+      radial-gradient(circle at 90% 60%, #FFE9C2 0 1.5px, transparent 2.5px),
+      radial-gradient(circle at 40% 80%, #FFE9C2 0 1px, transparent 2px),
+      radial-gradient(circle at 74% 88%, #FFE9C2 0 1.5px, transparent 2.5px),
+      radial-gradient(circle at 8% 90%, #FFE9C2 0 1px, transparent 2px);
+    animation: sparkle 3s ease-in-out infinite;
+  }
+  @keyframes sparkle {
+    0%, 100% { opacity: .35; }
+    50% { opacity: 1; }
+  }
+
+  /* вспышка света при наведении (как в glowing buttons на твоём примере) */
+  html[data-theme="dark"] .card-star::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 215, 170, .25) 0%, rgba(255, 215, 170, 0) 70%);
+    transform: scale(0);
+    transition: transform .6s ease;
+    pointer-events: none;
+  }
+  html[data-theme="dark"] .card-star:hover::after { transform: scale(1); }
+
+  /* при наведении: свечение сильнее и без пульсации */
+  html[data-theme="dark"] .card-star:hover {
+    animation: none;
+    box-shadow:
+      0 0 30px rgba(232, 150, 200, .6),
+      0 0 80px rgba(232, 150, 200, .35),
+      inset 0 0 36px rgba(242, 190, 220, .25);
+  }
+
+  /* содержимое карточки поверх искорок */
+  html[data-theme="dark"] .card-star > * { position: relative; z-index: 1; }
+
+  html[data-theme="dark"] .card-star h3 { color: #FFF3E6; }
+  html[data-theme="dark"] .card-star p { color: #D9C8E0; }
+  html[data-theme="dark"] .card-star .emoji { filter: drop-shadow(0 0 10px rgba(255, 225, 170, .9)); }
+  html[data-theme="dark"] .card-star .price { color: #F0D29A; text-shadow: 0 0 10px rgba(240, 210, 154, .55); }
+  html[data-theme="dark"] .card-star .pick { background: #E8C89A; color: #3A2E3F; }
+  html[data-theme="dark"] .card-star .pick:hover {
+    background: #FFE2B0;
+    box-shadow: 0 0 15px #E8C89A, 0 0 40px #E8C89A;
+  }
+
+  /* если у человека отключены анимации в системе — не двигаем */
+  @media (prefers-reduced-motion: reduce) {
+    html[data-theme="dark"] .card-star,
+    html[data-theme="dark"] .card-star::before { animation: none; }
+  }
+
+  html[data-theme="dark"] .order { background: #2E2338; }
+  html[data-theme="dark"] .order h2 { color: #FBF7F2; }
+  html[data-theme="dark"] .order p { color: #CDBFD2; }
+  html[data-theme="dark"] .order input { background: #1F1826; border-color: #4A3B52; color: #F3ECF5; }
+  html[data-theme="dark"] .order input::placeholder { color: #8F8095; }
+  html[data-theme="dark"] .order input:focus { border-color: #C98B8B; }
+  html[data-theme="dark"] .order button { background: #F2D5D5; color: #3A2E3F; }
+  html[data-theme="dark"] .order button:hover { background: #C98B8B; color: #FBF7F2; }
+
+  html[data-theme="dark"] .lang-btn,
+  html[data-theme="dark"] .theme-btn { background: rgba(43, 34, 51, .85); color: #F3ECF5; border-color: #4A3B52; }
+  html[data-theme="dark"] .lang-btn:hover,
+  html[data-theme="dark"] .theme-btn:hover { background: #4A3B52; }
+  html[data-theme="dark"] .lang-btn.active { background: #F2D5D5; color: #3A2E3F; border-color: #F2D5D5; }
+
+  /* ===== ✨ ТАРТ ПОЛНОЛУНИЕ: кристалл в тёмной теме ===== */
+  html[data-theme="dark"] .card-star {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #54405C 0%, #2E2338 100%);
+    border-color: #E8C89A;
+    box-shadow: 0 0 24px rgba(232, 200, 154, .35),
+                0 0 64px rgba(232, 200, 154, .15),
+                inset 0 0 32px rgba(255, 255, 255, .06);
+    animation: moonGlow 4.5s ease-in-out infinite;
+  }
+
+  /* грани кристалла */
+  html[data-theme="dark"] .card-star::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(115deg, transparent 0 30%, rgba(255, 255, 255, .08) 30% 31%, transparent 31% 58%, rgba(255, 255, 255, .06) 58% 59%, transparent 59%),
+      linear-gradient(65deg, rgba(255, 255, 255, .05) 0 18%, transparent 18% 70%, rgba(232, 200, 154, .09) 70% 100%);
+  }
+
+  /* блик, пробегающий по грани */
+  html[data-theme="dark"] .card-star::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 40%;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .22), transparent);
+    transform: skewX(-20deg);
+    animation: crystalShine 6s ease-in-out infinite;
+  }
+
+  html[data-theme="dark"] .card-star > * { position: relative; z-index: 1; }
+
+  html[data-theme="dark"] .card-star .emoji {
+    font-size: 3rem;
+    filter: drop-shadow(0 0 12px rgba(232, 200, 154, .9));
+  }
+  html[data-theme="dark"] .card-star h3 {
+    text-shadow: 0 0 14px rgba(232, 200, 154, .55);
+  }
+  html[data-theme="dark"] .card-star .price {
+    text-shadow: 0 0 10px rgba(232, 200, 154, .6);
+  }
+
+  @keyframes moonGlow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(232, 200, 154, .3), 0 0 50px rgba(232, 200, 154, .12), inset 0 0 28px rgba(255, 255, 255, .05);
+    }
+    50% {
+      box-shadow: 0 0 32px rgba(232, 200, 154, .55), 0 0 80px rgba(232, 200, 154, .25), inset 0 0 38px rgba(255, 255, 255, .09);
+    }
+  }
+  @keyframes crystalShine {
+    0%, 65% { left: -60%; }
+    100% { left: 140%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html[data-theme="dark"] .card-star,
+    html[data-theme="dark"] .card-star::after { animation: none; }
+  }
 </style>
 </head>
 <body>
+
+  <!-- ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ -->
+  <div class="lang-switch" role="group" aria-label="Language">
+    <button class="lang-btn" data-lang="ru">RU</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="tr">TR</button>
+    <button class="theme-btn" id="themeBtn" aria-label="Тема / Theme / Tema">🌙</button>
+  </div>
 
   <!-- ГЛАВНЫЙ ЭКРАН -->
   <header class="hero">
     <p class="hero-sub">café au clair de lune</p>
     <h1>Cafélune</h1>
-    <p class="hero-tag">Кафе при лунном свете 🌙</p>
-    <a href="#menu" class="btn">Заглянуть внутрь</a>
+    <p class="hero-tag" data-i18n="heroTag">Кафе при лунном свете 🌙</p>
+    <a href="#menu" class="btn" data-i18n="heroBtn">Заглянуть внутрь</a>
   </header>
 
   <!-- МЕНЮ -->
   <section id="menu" class="menu">
-    <h2>Наше меню</h2>
-    <p class="menu-sub">— кофе и десерты на каждый день —</p>
+    <h2 data-i18n="menuTitle">Наше меню</h2>
+    <p class="menu-sub" data-i18n="menuSub">— кофе и десерты на каждый день —</p>
 
     <div class="menu-grid">
       <article class="card">
         <span class="emoji">☕</span>
-        <h3>Эспрессо</h3>
-        <p>Крепкий, густой, без лишнего. Классика на 30 мл.</p>
+        <h3 data-i18n="espresso">Эспрессо</h3>
+        <p data-i18n="espressoDesc">Крепкий, густой, без лишнего. Классика на 30 мл.</p>
         <span class="price">180 ₽</span>
-        <button class="pick" data-name="Эспрессо">Выбрать</button>
+        <button class="pick" data-key="espresso" data-i18n="pick">Выбрать</button>
       </article>
 
       <article class="card">
         <span class="emoji">🥛</span>
-        <h3>Капучино</h3>
-        <p>Эспрессо с плотной молочной пеной. Мягкий и тёплый.</p>
+        <h3 data-i18n="cappuccino">Капучино</h3>
+        <p data-i18n="cappuccinoDesc">Эспрессо с плотной молочной пеной. Мягкий и тёплый.</p>
         <span class="price">240 ₽</span>
-        <button class="pick" data-name="Капучино">Выбрать</button>
+        <button class="pick" data-key="cappuccino" data-i18n="pick">Выбрать</button>
       </article>
 
       <article class="card">
         <span class="emoji">🍫</span>
-        <h3>Мокко</h3>
-        <p>Кофе с шоколадом. Сладко, но не приторно.</p>
+        <h3 data-i18n="mocha">Мокко</h3>
+        <p data-i18n="mochaDesc">Кофе с шоколадом. Сладко, но не приторно.</p>
         <span class="price">280 ₽</span>
-        <button class="pick" data-name="Мокко">Выбрать</button>
+        <button class="pick" data-key="mocha" data-i18n="pick">Выбрать</button>
       </article>
 
       <article class="card">
         <span class="emoji">🍶</span>
-        <h3>Латте</h3>
-        <p>Много молока, мягкий вкус. На каждый день.</p>
+        <h3 data-i18n="latte">Латте</h3>
+        <p data-i18n="latteDesc">Много молока, мягкий вкус. На каждый день.</p>
         <span class="price">260 ₽</span>
-        <button class="pick" data-name="Латте">Выбрать</button>
+        <button class="pick" data-key="latte" data-i18n="pick">Выбрать</button>
       </article>
 
       <article class="card">
         <span class="emoji">🍰</span>
-        <h3>Чизкейк</h3>
-        <p>Сливочный, на песочной основе. С ягодным соусом.</p>
+        <h3 data-i18n="cheesecake">Чизкейк</h3>
+        <p data-i18n="cheesecakeDesc">Сливочный, на песочной основе. С ягодным соусом.</p>
         <span class="price">320 ₽</span>
-        <button class="pick" data-name="Чизкейк">Выбрать</button>
+        <button class="pick" data-key="cheesecake" data-i18n="pick">Выбрать</button>
       </article>
 
       <article class="card">
         <span class="emoji">🥐</span>
-        <h3>Круассан</h3>
-        <p>Слоёный, хрустящий снаружи, мягкий внутри.</p>
+        <h3 data-i18n="croissant">Круассан</h3>
+        <p data-i18n="croissantDesc">Слоёный, хрустящий снаружи, мягкий внутри.</p>
         <span class="price">200 ₽</span>
-        <button class="pick" data-name="Круассан">Выбрать</button>
+        <button class="pick" data-key="croissant" data-i18n="pick">Выбрать</button>
       </article>
 
       <article class="card card-star">
         <span class="emoji">🌙</span>
-        <h3>Тарт Полнолуние</h3>
-        <p>Тарт с карамелью и шоколадной глазурью в форме полумесяца. Наш акцент.</p>
+        <h3 data-i18n="tart">Тарт Полнолуние</h3>
+        <p data-i18n="tartDesc">Тарт с карамелью и шоколадной глазурью в форме полумесяца. Наш акцент.</p>
         <span class="price">380 ₽</span>
-        <button class="pick" data-name="Тарт Полнолуние">Выбрать</button>
+        <button class="pick" data-key="tart" data-i18n="pick">Выбрать</button>
       </article>
     </div>
   </section>
@@ -317,37 +556,204 @@
   <!-- ФОРМА ЗАКАЗА -->
   <section class="order" id="order">
     <div class="order-inner">
-      <h2>Оформить быстрый заказ</h2>
-      <p>Заполните форму, и мы приготовим ваш заказ к приходу ✨</p>
+      <h2 data-i18n="orderTitle">Оформить быстрый заказ</h2>
+      <p data-i18n="orderText">Заполните форму, и мы приготовим ваш заказ к приходу ✨</p>
 
       <form id="orderForm">
-        <input type="text" id="orderItem" placeholder="Ваш заказ" readonly>
-        <input type="text" id="name" placeholder="Ваше имя" required>
-        <input type="tel" id="phone" placeholder="Номер телефона" required>
-        <button type="submit">Подтвердить заказ ✨</button>
+        <input type="text" id="orderItem" data-i18n-placeholder="phItem" placeholder="Ваш заказ" readonly>
+        <input type="text" id="name" data-i18n-placeholder="phName" placeholder="Ваше имя" required>
+        <input type="tel" id="phone" data-i18n-placeholder="phPhone" placeholder="Номер телефона" required>
+        <button type="submit" data-i18n="submit">Подтвердить заказ ✨</button>
       </form>
     </div>
   </section>
 
   <footer class="footer">
-    <p>Cafélune ✦ кофе и десерты ✦ 2026</p>
+    <p data-i18n="footer">Cafélune ✦ кофе и десерты ✦ 2026</p>
   </footer>
 
 <script>
-  const hour = new Date().getHours();
-  if (hour >= 20 || hour < 6) {
-    document.body.style.background = '#EDE7F2';
+  /* ============ 🌍 ПЕРЕВОДЫ ============ */
+  const translations = {
+    ru: {
+      heroTag: 'Кафе при лунном свете 🌙',
+      heroBtn: 'Заглянуть внутрь',
+      menuTitle: 'Наше меню',
+      menuSub: '— кофе и десерты на каждый день —',
+      espresso: 'Эспрессо',
+      espressoDesc: 'Крепкий, густой, без лишнего. Классика на 30 мл.',
+      cappuccino: 'Капучино',
+      cappuccinoDesc: 'Эспрессо с плотной молочной пеной. Мягкий и тёплый.',
+      mocha: 'Мокко',
+      mochaDesc: 'Кофе с шоколадом. Сладко, но не приторно.',
+      latte: 'Латте',
+      latteDesc: 'Много молока, мягкий вкус. На каждый день.',
+      cheesecake: 'Чизкейк',
+      cheesecakeDesc: 'Сливочный, на песочной основе. С ягодным соусом.',
+      croissant: 'Круассан',
+      croissantDesc: 'Слоёный, хрустящий снаружи, мягкий внутри.',
+      tart: 'Тарт Полнолуние',
+      tartDesc: 'Тарт с карамелью и шоколадной глазурью в форме полумесяца. Наш акцент.',
+      pick: 'Выбрать',
+      orderTitle: 'Оформить быстрый заказ',
+      orderText: 'Заполните форму, и мы приготовим ваш заказ к приходу ✨',
+      phItem: 'Ваш заказ',
+      phName: 'Ваше имя',
+      phPhone: 'Номер телефона',
+      submit: 'Подтвердить заказ ✨',
+      footer: 'Cafélune ✦ кофе и десерты ✦ 2026',
+      alertEmpty: 'Сначала выберите что-нибудь из меню 🍒',
+      alertOk: (name, item, phone) => `Спасибо, ${name}! Ваш заказ «${item}» принят. Мы позвоним по номеру ${phone} 🌙`
+    },
+    en: {
+      heroTag: 'A café by moonlight 🌙',
+      heroBtn: 'Take a peek inside',
+      menuTitle: 'Our menu',
+      menuSub: '— coffee and desserts for every day —',
+      espresso: 'Espresso',
+      espressoDesc: 'Strong, thick, no fuss. A 30 ml classic.',
+      cappuccino: 'Cappuccino',
+      cappuccinoDesc: 'Espresso with dense milk foam. Soft and warm.',
+      mocha: 'Mocha',
+      mochaDesc: 'Coffee with chocolate. Sweet, but not cloying.',
+      latte: 'Latte',
+      latteDesc: 'Lots of milk and a gentle flavor. For every day.',
+      cheesecake: 'Cheesecake',
+      cheesecakeDesc: 'Creamy, on a shortbread base. With berry sauce.',
+      croissant: 'Croissant',
+      croissantDesc: 'Flaky, crisp outside, soft inside.',
+      tart: 'Full Moon Tart',
+      tartDesc: 'A crescent-shaped tart with caramel and chocolate glaze. Our signature.',
+      pick: 'Choose',
+      orderTitle: 'Place a quick order',
+      orderText: "Fill in the form and we'll have your order ready for your arrival ✨",
+      phItem: 'Your order',
+      phName: 'Your name',
+      phPhone: 'Phone number',
+      submit: 'Confirm order ✨',
+      footer: 'Cafélune ✦ coffee and desserts ✦ 2026',
+      alertEmpty: 'Please pick something from the menu first 🍒',
+      alertOk: (name, item, phone) => `Thank you, ${name}! Your order "${item}" is confirmed. We'll call you at ${phone} 🌙`
+    },
+    tr: {
+      heroTag: 'Ay ışığında kafe 🌙',
+      heroBtn: 'İçeri göz at',
+      menuTitle: 'Menümüz',
+      menuSub: '— her gün için kahve ve tatlılar —',
+      espresso: 'Espresso',
+      espressoDesc: 'Sert, yoğun, sade. 30 ml klasik.',
+      cappuccino: 'Kapuçino',
+      cappuccinoDesc: 'Yoğun süt köpüklü espresso. Yumuşak ve sıcak.',
+      mocha: 'Mocha',
+      mochaDesc: 'Çikolatalı kahve. Tatlı ama bunaltıcı değil.',
+      latte: 'Latte',
+      latteDesc: 'Bol sütlü, yumuşak bir tat. Her gün için.',
+      cheesecake: 'Cheesecake',
+      cheesecakeDesc: 'Kremalı, bisküvi tabanlı. Orman meyveli sos ile.',
+      croissant: 'Kruvasan',
+      croissantDesc: 'Katman katman, dışı çıtır, içi yumuşak.',
+      tart: 'Dolunay Tart',
+      tartDesc: 'Karamelli ve çikolata glazürlü, hilal şeklinde tart. Özel favorimiz.',
+      pick: 'Seç',
+      orderTitle: 'Hızlı sipariş ver',
+      orderText: 'Formu doldurun, siz gelene kadar siparişinizi hazırlayalım ✨',
+      phItem: 'Siparişiniz',
+      phName: 'Adınız',
+      phPhone: 'Telefon numaranız',
+      submit: 'Siparişi onayla ✨',
+      footer: 'Cafélune ✦ kahve ve tatlılar ✦ 2026',
+      alertEmpty: 'Önce menüden bir şey seçin 🍒',
+      alertOk: (name, item, phone) => `Teşekkürler, ${name}! «${item}» siparişiniz alındı. Sizi ${phone} numarasından arayacağız 🌙`
+    }
+  };
+
+  /* ============ 🌍 ВЫБОР И ПРИМЕНЕНИЕ ЯЗЫКА ============ */
+  const orderItem = document.getElementById('orderItem');
+  let currentLang = 'ru';
+  let selectedKey = null; // храним ключ блюда, а не текст — чтобы название переводилось
+
+  function setLang(lang) {
+    if (!translations[lang]) lang = 'ru';
+    currentLang = lang;
+    const t = translations[lang];
+
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (t[key]) el.textContent = t[key];
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.dataset.i18nPlaceholder;
+      if (t[key]) el.placeholder = t[key];
+    });
+
+    // название выбранного блюда тоже переводим
+    orderItem.value = selectedKey ? t[selectedKey] : '';
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+
+    try { localStorage.setItem('cafelune-lang', lang); } catch (e) {}
   }
 
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLang(btn.dataset.lang));
+  });
+
+  // стартовый язык: сохранённый → язык браузера → русский
+  let startLang = 'ru';
+  try {
+    const saved = localStorage.getItem('cafelune-lang');
+    if (saved && translations[saved]) {
+      startLang = saved;
+    } else {
+      const browser = (navigator.language || 'ru').slice(0, 2);
+      if (translations[browser]) startLang = browser;
+    }
+  } catch (e) {}
+  setLang(startLang);
+
+  /* ============ 🌙 ФОН ПО ВРЕМЕНИ СУТОК ============ */
+  const hour = new Date().getHours();
+  const themeBtn = document.getElementById('themeBtn');
+
+  function applyTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    // в светлой теме ночью оставляем лавандовый фон, в тёмной — свой
+    document.body.style.background = '';
+    if (theme === 'light' && (hour >= 20 || hour < 6)) {
+      document.body.style.background = '#EDE7F2';
+    }
+    themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+    try { localStorage.setItem('cafelune-theme', theme); } catch (e) {}
+  }
+
+  // стартовая тема: сохранённая → системная → светлая
+  let startTheme = 'light';
+  try {
+    const savedTheme = localStorage.getItem('cafelune-theme');
+    if (savedTheme === 'dark' || savedTheme === 'light') {
+      startTheme = savedTheme;
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      startTheme = 'dark';
+    }
+  } catch (e) {}
+  applyTheme(startTheme);
+
+  themeBtn.addEventListener('click', () => {
+    applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+  });
+
   /* ============ 🍒 КНОПКА «ВЫБРАТЬ» ============ */
-  const orderItem = document.getElementById('orderItem');
   const orderSection = document.getElementById('order');
 
   document.querySelectorAll('.pick').forEach(btn => {
     btn.addEventListener('click', () => {
-      // подставляем название в поле заказа
-      orderItem.value = btn.dataset.name;
-      // плавно прокручиваем к форме
+      selectedKey = btn.dataset.key;
+      orderItem.value = translations[currentLang][selectedKey];
       orderSection.scrollIntoView({ behavior: 'smooth' });
     });
   });
@@ -356,22 +762,23 @@
   const form = document.getElementById('orderForm');
 
   form.addEventListener('submit', (e) => {
-    e.preventDefault(); // не перезагружаем страницу
+    e.preventDefault();
 
+    const t = translations[currentLang];
     const name = document.getElementById('name').value;
     const phone = document.getElementById('phone').value;
-    const item = orderItem.value;
 
-    if (!item) {
-      alert('Сначала выберите что-нибудь из меню 🍒');
+    if (!selectedKey) {
+      alert(t.alertEmpty);
       return;
     }
 
-    alert(`Спасибо, ${name}! Ваш заказ «${item}» принят. Мы позвоним по номеру ${phone} 🌙`);
+    alert(t.alertOk(name, t[selectedKey], phone));
     form.reset();
+    selectedKey = null;
     orderItem.value = '';
   });
 </script>
 
 </body>
-  </html>
+</html>
