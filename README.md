@@ -32,4 +32,4 @@
 * 📋 [Форма Вебинара](https://vanessacalliope.github.io/My-portfolio/webinar-form.html) — интерактивная форма регистрации.
 * 🗂️ [База заметок](https://vanessacalliope.github.io/My-portfolio/notes.html) — персональный архив с подсказками по коду.
 * ✍️ [Блог](https://vanessacalliope.github.io/My-portfolio/blog.html) — персональный блог с интересными статьями.
-- 💳 [HoloID](https://vanessacalliope.github.io/My-portfolio/holo-id-card.html) — интерактивная голографическая карта.
+* 💳 [HoloID](https://vanessacalliope.github.io/My-portfolio/holo-id-card.html) — интерактивная голографическая карта.
