@@ -297,8 +297,6 @@
   html[data-theme="dark"] .card .pick { background: #F2D5D5; color: #3A2E3F; }
   html[data-theme="dark"] .card .pick:hover { background: #C98B8B; color: #FBF7F2; }
 
-  /* карточка-акцент (после общих правил карточек, чтобы не перебивались) */
-  /* 💎 Тарт Полнолуние: карточка-кристалл: аметист с лунным золотом */
   html[data-theme="dark"] .card-star {
     position: relative;
     overflow: hidden; /* чтобы искорки не вылезали за края */
@@ -311,7 +309,6 @@
     animation: crystal-pulse 4s ease-in-out infinite;
   }
 
-  /* мягкое «дыхание» свечения */
   @keyframes crystal-pulse {
     0%, 100% {
       box-shadow: 0 0 14px rgba(232, 150, 200, .30), 0 0 40px rgba(232, 150, 200, .15), inset 0 0 24px rgba(242, 190, 220, .12);
@@ -320,8 +317,7 @@
       box-shadow: 0 0 26px rgba(232, 150, 200, .55), 0 0 70px rgba(232, 150, 200, .28), inset 0 0 34px rgba(242, 190, 220, .22);
     }
   }
-
-  /* искорки, как светлячки в пещере на фото, только золотые, как луна */
+ 
   html[data-theme="dark"] .card-star::before {
     content: '';
     position: absolute;
@@ -343,7 +339,6 @@
     50% { opacity: 1; }
   }
 
-  /* вспышка света при наведении (как в glowing buttons на твоём примере) */
   html[data-theme="dark"] .card-star::after {
     content: '';
     position: absolute;
@@ -358,7 +353,6 @@
   }
   html[data-theme="dark"] .card-star:hover::after { transform: scale(1); }
 
-  /* при наведении: свечение сильнее и без пульсации */
   html[data-theme="dark"] .card-star:hover {
     animation: none;
     box-shadow:
@@ -367,7 +361,6 @@
       inset 0 0 36px rgba(242, 190, 220, .25);
   }
 
-  /* содержимое карточки поверх искорок */
   html[data-theme="dark"] .card-star > * { position: relative; z-index: 1; }
 
   html[data-theme="dark"] .card-star h3 { color: #FFF3E6; }
@@ -379,8 +372,7 @@
     background: #FFE2B0;
     box-shadow: 0 0 15px #E8C89A, 0 0 40px #E8C89A;
   }
-
-  /* если у человека отключены анимации в системе — не двигаем */
+ 
   @media (prefers-reduced-motion: reduce) {
     html[data-theme="dark"] .card-star,
     html[data-theme="dark"] .card-star::before { animation: none; }
@@ -401,7 +393,7 @@
   html[data-theme="dark"] .theme-btn:hover { background: #4A3B52; }
   html[data-theme="dark"] .lang-btn.active { background: #F2D5D5; color: #3A2E3F; border-color: #F2D5D5; }
 
-  /* ===== ✨ ТАРТ ПОЛНОЛУНИЕ: кристалл в тёмной теме ===== */
+  /* ===== ✨ ТАРТ ПОЛНОЛУНИЕ в тёмной теме ===== */
   html[data-theme="dark"] .card-star {
     position: relative;
     overflow: hidden;
@@ -688,7 +680,6 @@
       if (t[key]) el.placeholder = t[key];
     });
 
-    // название выбранного блюда тоже переводим
     orderItem.value = selectedKey ? t[selectedKey] : '';
 
     document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -702,7 +693,6 @@
     btn.addEventListener('click', () => setLang(btn.dataset.lang));
   });
 
-  // стартовый язык: сохранённый → язык браузера → русский
   let startLang = 'ru';
   try {
     const saved = localStorage.getItem('cafelune-lang');
@@ -714,8 +704,7 @@
     }
   } catch (e) {}
   setLang(startLang);
-
-  /* ============ 🌙 ФОН ПО ВРЕМЕНИ СУТОК ============ */
+ 
   const hour = new Date().getHours();
   const themeBtn = document.getElementById('themeBtn');
 
@@ -730,7 +719,6 @@
     try { localStorage.setItem('cafelune-theme', theme); } catch (e) {}
   }
 
-  // стартовая тема: сохранённая → системная → светлая
   let startTheme = 'light';
   try {
     const savedTheme = localStorage.getItem('cafelune-theme');
@@ -746,7 +734,6 @@
     applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
   });
 
-  /* ============ 🍒 КНОПКА «ВЫБРАТЬ» ============ */
   const orderSection = document.getElementById('order');
 
   document.querySelectorAll('.pick').forEach(btn => {
@@ -757,7 +744,7 @@
     });
   });
 
-  /* ============ ✨ ПОДТВЕРЖДЕНИЕ ЗАКАЗА ============ */
+  /* ============  ПОДТВЕРЖДЕНИЕ ЗАКАЗА ============ */
   const form = document.getElementById('orderForm');
 
   form.addEventListener('submit', (e) => {
