@@ -2,273 +2,279 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>daily notes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>daily notes · green</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&family=Quicksand:wght@700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;1,500&family=Nunito:wght@400;600&family=DM+Mono&display=swap" rel="stylesheet">
 <style>
-body {
-  margin: 0;
-  background: #ffffff;
-  color: #3d3a45;
-  font-family: 'Nunito', sans-serif;
-  line-height: 1.55;
+:root {
+  --bg: #eaf1d8; --ink: #2f4a3a; --ink2: #4f6e5a; --tag-ink: #2f5a3f;
+  --glass: rgba(255,255,255,.55); --glass-line: rgba(255,255,255,.9); --shadow: rgba(90,130,80,.16);
+  --code-bg: rgba(255,251,238,.92); --code-ink: #8b6f47;
+  --glow1: rgba(244,238,150,.8); --glow2: rgba(150,215,185,.6); --ray: rgba(255,255,225,.3);
+  --on-bg: #cfe59a; --on-ink: #2f4a3a;
+  --glow3: rgba(255,255,255,.45); --g3shape: 35% 28%; --g3pos: 88% 18%;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
 }
-
-.hero {
-  text-align: center;
-  padding: 2.4rem 1.2rem 1.2rem;
+:root.dark {
+  --bg: #12211a; --ink: #e3eedb; --ink2: #a9c4b0; --tag-ink: #d6ecc0;
+  --glass: rgba(34,58,46,.55); --glass-line: rgba(160,210,170,.18); --shadow: rgba(0,0,0,.4);
+  --code-bg: rgba(10,22,16,.7); --code-ink: #ecdca8;
+  --glow1: rgba(190,220,110,.27); --glow2: rgba(60,150,110,.38); --ray: rgba(200,235,150,.07);
+  --on-bg: #4f7a4a; --on-ink: #eef7e4;
+  --glow3: rgba(255,246,196,.5); --g3shape: 62% 42%; --g3pos: 100% 0%;
 }
-
-.hero h1 {
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 700;
-  font-size: 1.6rem;
-  margin: 0;
-  color: #5a5468;
+html { background: var(--bg); scroll-padding-top: env(safe-area-inset-top, 0px); transition: background .4s; }
+body { margin: 0; color: var(--ink); font-family: 'Nunito', sans-serif; line-height: 1.6; }
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(60% 45% at 12% 0%, var(--glow1), transparent 70%),
+    radial-gradient(55% 50% at 100% 100%, var(--glow2), transparent 70%),
+    radial-gradient(var(--g3shape) at var(--g3pos), var(--glow3), transparent 70%);
 }
-
-main {
-  max-width: 480px;
-  margin: 0 auto;
-  padding: 0.5rem 1.1rem 2.5rem;
+body::after {
+  content: ""; position: fixed; inset: -5%; z-index: -1; pointer-events: none;
+  background: repeating-linear-gradient(110deg, transparent 0 70px, var(--ray) 70px 120px, transparent 120px 230px);
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent 65%);
+  mask-image: linear-gradient(to bottom, #000, transparent 65%);
+  animation: sway 14s ease-in-out infinite alternate;
 }
+:root.dark body::after {
+  inset: 0; filter: blur(18px);
+  background: conic-gradient(from 188deg at 100% 0%, transparent 0deg, rgba(255,244,190,.2) 22deg, rgba(255,244,190,.12) 40deg, transparent 70deg, transparent 360deg);
+  -webkit-mask-image: radial-gradient(110% 85% at 100% 0%, #000, transparent 72%);
+  mask-image: radial-gradient(110% 85% at 100% 0%, #000, transparent 72%);
+  animation: none;
+}
+@keyframes sway { from { opacity: .5; transform: translateX(-2%); } to { opacity: 1; transform: translateX(2%); } }
 
+.hero { text-align: center; padding: 2.6rem 1.2rem 1rem; }
+.hero h1 { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 2rem; line-height: 1.15; margin: 0; color: var(--ink); }
+.hero p { margin: 0.5rem 0 0; font-size: 0.8rem; letter-spacing: .14em; text-transform: lowercase; color: var(--ink2); }
+.controls { display: flex; justify-content: center; gap: 8px; margin-top: 1.1rem; }
+.controls button {
+  font-family: 'Nunito', sans-serif; font-weight: 600; font-size: 0.8rem; padding: 0.4rem 0.95rem;
+  border: 1px solid var(--glass-line); border-radius: 20px; background: var(--glass); color: var(--ink);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); cursor: pointer; transition: transform .2s;
+}
+.controls button:hover { transform: translateY(-2px); }
+.controls button.on { background: var(--on-bg); color: var(--on-ink); border-color: transparent; }
+
+main { max-width: 480px; margin: 0 auto; padding: 0.8rem 1.1rem 3rem; }
 .entry {
-  background: #ffffff;
-  border: 1px solid #eee;
-  border-top: 5px solid var(--accent);
-  border-radius: 14px;
-  padding: 1.2rem 1.3rem;
-  margin-bottom: 1.2rem;
+  position: relative; margin-bottom: 1.3rem; padding: 1.25rem 1.35rem 1.3rem; border-radius: 28px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 16%, transparent), transparent 50%), var(--glass);
+  border: 1px solid var(--glass-line);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px var(--shadow);
+  transition: transform .3s;
 }
+.entry:hover { transform: translateY(-3px); }
+.entry.rise { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+.entry::before, .entry::after {
+  content: ""; position: absolute; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle at 32% 30%, #fff 0 14%, rgba(255,255,255,.35) 38%, rgba(255,255,255,.08) 70%);
+  border: 1px solid rgba(255,255,255,.6);
+  box-shadow: inset -2px -3px 5px rgba(60,120,80,.12), 0 3px 6px rgba(60,120,80,.12);
+}
+.entry::before { width: 15px; height: 15px; top: 14px; right: 20px; }
+.entry::after { width: 8px; height: 8px; top: 36px; right: 40px; }
 
 .entry-tag {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 18%, white);
-  padding: 0.2rem 0.6rem;
-  border-radius: 20px;
-  margin-bottom: 0.6rem;
+  display: inline-block; font-size: 0.74rem; font-weight: 600; letter-spacing: .04em; color: var(--tag-ink);
+  background: color-mix(in srgb, var(--accent) 38%, transparent);
+  padding: 0.2rem 0.75rem 0.2rem 0.6rem; border-radius: 20px; margin-bottom: 0.7rem;
 }
-
-.entry-term {
-  margin: 0 0 0.6rem;
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: #4a4458;
-}
-
-.entry-note {
-  margin: 0;
-  font-size: 0.95rem;
-  color: #5a5468;
-}
-
+.entry-tag::before { content: "✿"; margin-right: .35em; color: var(--accent); filter: brightness(.85); }
+.entry-term { margin: 0 0 0.5rem; font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.3rem; color: var(--ink); }
+.entry-note { margin: 0; font-size: 0.95rem; color: var(--ink2); }
 .entry-example {
-  margin: 0.7rem 0 0;
-  padding: 0.55rem 0.75rem;
-  background: #f7f5fa;
-  border-radius: 8px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.82rem;
-  color: #4a4458;
-  white-space: pre-wrap;
-  word-break: break-word;
+  margin: 0.9rem 0 0; padding: 0.7rem 0.9rem; border-radius: 16px; background: var(--code-bg);
+  box-shadow: inset 0 -3px 0 rgba(120,100,60,.1), 0 1px 0 rgba(255,255,255,.7);
+  font-family: 'DM Mono', 'Courier New', monospace; font-size: 0.82rem; color: var(--code-ink);
+  white-space: pre-wrap; word-break: break-word;
 }
-
+@media (prefers-reduced-motion: reduce) {
+  body::after, .entry.rise { animation: none; }
+}
 </style>
 </head>
 <body>
 
 <header class="hero">
-  <h1>мой дневник кода 🌸</h1>
+  <h1 id="title"></h1>
+  <p id="sub"></p>
+  <div class="controls" id="controls"></div>
 </header>
 
 <main id="log"></main>
 
 <script>
+const ui = {
+  ru: { t: "мой дневник кода 🍀", s: "заметки про код, по одной" },
+  en: { t: "my code diary 🍀", s: "one tiny code note at a time" },
+  tr: { t: "kod günlüğüm 🍀", s: "tek tek küçük kod notları" }
+};
 
 const entries = [
-  {
-    date: "2026-09-01",
-    category: "html",
-    term: "<p>",
-    note: "Парный тег. Абзац текста. Каждый новый <p> браузер начинает с новой строки, с небольшим отступом сверху и снизу.",
-    example: "<p>Привет, мир!</p>"
-  },
-  {
-    date: "2026-09-02",
-    category: "html",
-    term: "<div>",
-    note: "Парный тег. Универсальный блок-контейнер без собственного смысла — нужен, чтобы группировать элементы и стилизовать их вместе.",
-    example: "<div class=\"card\">...</div>"
-  },
-  {
-    date: "2026-09-03",
-    category: "html",
-    term: "<img>",
-    note: "Одиночный тег — закрывающего </img> не бывает. Вставляет картинку. Обязательный атрибут — src (путь к файлу).",
-    example: "<img src=\"cat.jpg\" alt=\"кот\">"
-  },
-  {
-    date: "2026-09-04",
-    category: "html",
-    term: "<b>",
-    note: "Парный тег. Делает текст жирным чисто визуально, без смыслового ударения. Если жирность важна по смыслу — используют <strong>.",
-    example: "<b>жирный текст</b>"
-  },
-  {
-    date: "2026-09-05",
-    category: "html",
-    term: "<i>",
-    note: "Парный тег. Курсив без смыслового ударения. Если курсив важен по смыслу (например, термин) — используют <em>.",
-    example: "<i>курсивный текст</i>"
-  },
-  {
-    date: "2026-09-06",
-    category: "html",
-    term: "<u>",
-    note: "Парный тег. Подчёркивает текст снизу линией.",
-    example: "<u>подчёркнутый текст</u>"
-  },
-  {
-    date: "2026-09-07",
-    category: "html",
-    term: "<section>",
-    note: "Парный тег. Смысловой блок страницы — в отличие от <div>, имеет значение для скринридеров и поисковиков. Обычно содержит свой заголовок.",
-    example: "<section>\n  <h2>О нас</h2>\n</section>"
-  },
-  {
-    date: "2026-09-08",
-    category: "css",
-    term: "color",
-    note: "Свойство. Задаёт цвет текста внутри элемента.",
-    example: "color: hotpink;"
-  },
-  {
-    date: "2026-09-09",
-    category: "css",
-    term: "background",
-    note: "Свойство. Задаёт цвет (или картинку) фона элемента.",
-    example: "background: #f7f5fa;"
-  },
-  {
-    date: "2026-09-10",
-    category: "css",
-    term: "margin",
-    note: "Свойство. Отступ снаружи элемента — расстояние между ним и соседними элементами.",
-    example: "margin: 12px;"
-  },
-  {
-    date: "2026-09-11",
-    category: "css",
-    term: "padding",
-    note: "Свойство. Отступ внутри элемента — расстояние между его рамкой и содержимым.",
-    example: "padding: 1rem;"
-  },
-  {
-    date: "2026-09-12",
-    category: "css",
-    term: "border-radius",
-    note: "Свойство. Скругляет углы элемента. Чем больше значение, тем круглее углы.",
-    example: "border-radius: 14px;"
-  },
-  {
-    date: "2026-09-13",
-    category: "css",
-    term: "display: flex",
-    note: "Свойство-значение. Включает гибкую разметку (flexbox) — помогает быстро выстроить элементы в ряд или колонку.",
-    example: "display: flex;"
-  },
-  {
-    date: "2026-09-14",
-    category: "css",
-    term: "gap",
-    note: "Свойство. Задаёт отступы между элементами flex- или grid-контейнера, не трогая внешние края блока.",
-    example: "display: flex;\ngap: 12px;"
-  },
-  {
-    date: "2026-09-15",
-    category: "js",
-    term: "let",
-    note: "Ключевое слово. Объявляет переменную, значение которой потом можно менять.",
-    example: "let age = 20;"
-  },
-  {
-    date: "2026-09-16",
-    category: "js",
-    term: "const",
-    note: "Ключевое слово. Объявляет переменную, которую нельзя переприсвоить после создания.",
-    example: "const name = \"Аня\";"
-  },
-  {
-    date: "2026-09-17",
-    category: "js",
-    term: "console.log()",
-    note: "Метод. Выводит значение в консоль браузера — способ «подсмотреть», что происходит в коде во время выполнения.",
-    example: "console.log(age);"
-  },
-  {
-    date: "2026-09-18",
-    category: "js",
-    term: "for...of",
-    note: "Конструкция цикла. Проходит по значениям массива или строки — удобно, когда нужен сам элемент, а не его индекс.",
-    example: "for (const letter of \"кот\") {\n  console.log(letter);\n}"
-  },
-  {
-    date: "2026-09-19",
-    category: "js",
-    term: "break",
-    note: "Оператор. Досрочно прерывает цикл целиком.",
-    example: "if (i === 3) break;"
-  },
-  {
-    date: "2026-09-20",
-    category: "js",
-    term: "continue",
-    note: "Оператор. Пропускает текущий шаг цикла и переходит к следующему, не завершая цикл целиком (в отличие от break).",
-    example: "if (i === 2) continue;"
-  },
-  {
-    date: "2026-09-21",
-    category: "ts",
-    term: ": string",
-    note: "Аннотация типа. Говорит компилятору, что переменная может хранить только строку — ошибка подсветится ещё до запуска кода.",
-    example: "let name: string = \"Аня\";"
-  }
+  { category: "html", term: "<p>", example: "<p>Привет, мир!</p>", note: {
+    ru: "Парный тег. Абзац текста. Каждый новый <p> браузер начинает с новой строки, с небольшим отступом сверху и снизу.",
+    en: "Paired tag. A paragraph of text. The browser starts each new <p> on a new line, with a small gap above and below.",
+    tr: "Çift etiket. Bir metin paragrafı. Tarayıcı her yeni <p>'yi yeni satırda başlatır, üstte ve altta küçük bir boşlukla." } },
+  { category: "html", term: "<div>", example: "<div class=\"card\">...</div>", note: {
+    ru: "Парный тег. Универсальный блок-контейнер без собственного смысла — нужен, чтобы группировать элементы и стилизовать их вместе.",
+    en: "Paired tag. A universal block container with no meaning of its own — used to group elements and style them together.",
+    tr: "Çift etiket. Kendi başına anlamı olmayan genel bir blok kapsayıcı — öğeleri gruplamak ve birlikte biçimlendirmek için kullanılır." } },
+  { category: "html", term: "<img>", example: "<img src=\"cat.jpg\" alt=\"кот\">", note: {
+    ru: "Одиночный тег — закрывающего </img> не бывает. Вставляет картинку. Обязательный атрибут — src (путь к файлу).",
+    en: "Single tag — there is no closing </img>. Inserts an image. The required attribute is src (the file path).",
+    tr: "Tek etiket — kapanış </img> yoktur. Resim ekler. Zorunlu özellik src'dir (dosya yolu)." } },
+  { category: "html", term: "<b>", example: "<b>жирный текст</b>", note: {
+    ru: "Парный тег. Делает текст жирным чисто визуально, без смыслового ударения. Если жирность важна по смыслу — используют <strong>.",
+    en: "Paired tag. Makes text bold purely visually, with no emphasis in meaning. If bold matters semantically, use <strong>.",
+    tr: "Çift etiket. Metni yalnızca görsel olarak kalın yapar, anlamsal vurgu katmaz. Kalınlık anlam açısından önemliyse <strong> kullanılır." } },
+  { category: "html", term: "<i>", example: "<i>курсивный текст</i>", note: {
+    ru: "Парный тег. Курсив без смыслового ударения. Если курсив важен по смыслу (например, термин) — используют <em>.",
+    en: "Paired tag. Italic with no emphasis in meaning. If italic matters semantically (e.g. a term), use <em>.",
+    tr: "Çift etiket. Anlamsal vurgu olmadan italik yapar. İtalik anlam açısından önemliyse (örneğin bir terim), <em> kullanılır." } },
+  { category: "html", term: "<u>", example: "<u>подчёркнутый текст</u>", note: {
+    ru: "Парный тег. Подчёркивает текст снизу линией.",
+    en: "Paired tag. Underlines the text.",
+    tr: "Çift etiket. Metnin altını çizer." } },
+  { category: "html", term: "<section>", example: "<section>\n  <h2>О нас</h2>\n</section>", note: {
+    ru: "Парный тег. Смысловой блок страницы — в отличие от <div>, имеет значение для скринридеров и поисковиков. Обычно содержит свой заголовок.",
+    en: "Paired tag. A meaningful block of the page — unlike <div>, it matters to screen readers and search engines. Usually has its own heading.",
+    tr: "Çift etiket. Sayfanın anlamlı bir bölümü — <div>'den farklı olarak ekran okuyucular ve arama motorları için anlam taşır. Genellikle kendi başlığı olur." } },
+  { category: "css", term: "color", example: "color: hotpink;", note: {
+    ru: "Свойство. Задаёт цвет текста внутри элемента.",
+    en: "Property. Sets the text color inside an element.",
+    tr: "Özellik. Öğenin içindeki metin rengini belirler." } },
+  { category: "css", term: "background", example: "background: #f7f5fa;", note: {
+    ru: "Свойство. Задаёт цвет (или картинку) фона элемента.",
+    en: "Property. Sets the background color (or image) of an element.",
+    tr: "Özellik. Öğenin arka plan rengini (veya resmini) belirler." } },
+  { category: "css", term: "margin", example: "margin: 12px;", note: {
+    ru: "Свойство. Отступ снаружи элемента — расстояние между ним и соседними элементами.",
+    en: "Property. Space outside an element — the distance between it and neighboring elements.",
+    tr: "Özellik. Öğenin dışındaki boşluk — onunla komşu öğeler arasındaki mesafe." } },
+  { category: "css", term: "padding", example: "padding: 1rem;", note: {
+    ru: "Свойство. Отступ внутри элемента — расстояние между его рамкой и содержимым.",
+    en: "Property. Space inside an element — the distance between its border and its content.",
+    tr: "Özellik. Öğenin içindeki boşluk — kenarlığı ile içeriği arasındaki mesafe." } },
+  { category: "css", term: "border-radius", example: "border-radius: 14px;", note: {
+    ru: "Свойство. Скругляет углы элемента. Чем больше значение, тем круглее углы.",
+    en: "Property. Rounds the corners of an element. The larger the value, the rounder the corners.",
+    tr: "Özellik. Öğenin köşelerini yuvarlar. Değer ne kadar büyükse köşeler o kadar yuvarlak olur." } },
+  { category: "css", term: "display: flex", example: "display: flex;", note: {
+    ru: "Свойство-значение. Включает гибкую разметку (flexbox) — помогает быстро выстроить элементы в ряд или колонку.",
+    en: "Property-value. Turns on flexible layout (flexbox) — quickly lines elements up in a row or a column.",
+    tr: "Özellik-değer. Esnek yerleşimi (flexbox) açar — öğeleri hızlıca yan yana ya da alt alta dizer." } },
+  { category: "css", term: "gap", example: "display: flex;\ngap: 12px;", note: {
+    ru: "Свойство. Задаёт отступы между элементами flex- или grid-контейнера, не трогая внешние края блока.",
+    en: "Property. Sets the space between items of a flex or grid container, without touching the block's outer edges.",
+    tr: "Özellik. Flex veya grid kapsayıcısındaki öğeler arasındaki boşluğu belirler, bloğun dış kenarlarına dokunmaz." } },
+  { category: "js", term: "let", example: "let age = 20;", note: {
+    ru: "Ключевое слово. Объявляет переменную, значение которой потом можно менять.",
+    en: "Keyword. Declares a variable whose value can be changed later.",
+    tr: "Anahtar kelime. Değeri sonradan değiştirilebilen bir değişken tanımlar." } },
+  { category: "js", term: "const", example: "const name = \"Аня\";", note: {
+    ru: "Ключевое слово. Объявляет переменную, которую нельзя переприсвоить после создания.",
+    en: "Keyword. Declares a variable that can't be reassigned after it's created.",
+    tr: "Anahtar kelime. Oluşturulduktan sonra yeniden atanamayan bir değişken tanımlar." } },
+  { category: "js", term: "console.log()", example: "console.log(age);", note: {
+    ru: "Метод. Выводит значение в консоль браузера — способ «подсмотреть», что происходит в коде во время выполнения.",
+    en: "Method. Prints a value to the browser console — a way to peek at what's happening while the code runs.",
+    tr: "Metot. Bir değeri tarayıcı konsoluna yazdırır — kod çalışırken neler olduğuna göz atmanın yolu." } },
+  { category: "js", term: "for...of", example: "for (const letter of \"кот\") {\n  console.log(letter);\n}", note: {
+    ru: "Конструкция цикла. Проходит по значениям массива или строки — удобно, когда нужен сам элемент, а не его индекс.",
+    en: "Loop construct. Goes through the values of an array or string — handy when you need the item itself, not its index.",
+    tr: "Döngü yapısı. Bir dizinin veya metnin değerleri üzerinden geçer — indeks değil de öğenin kendisi gerektiğinde kullanışlıdır." } },
+  { category: "js", term: "break", example: "if (i === 3) break;", note: {
+    ru: "Оператор. Досрочно прерывает цикл целиком.",
+    en: "Statement. Stops the whole loop early.",
+    tr: "Deyim. Döngüyü tamamen erken sonlandırır." } },
+  { category: "js", term: "continue", example: "if (i === 2) continue;", note: {
+    ru: "Оператор. Пропускает текущий шаг цикла и переходит к следующему, не завершая цикл целиком (в отличие от break).",
+    en: "Statement. Skips the current step of the loop and moves to the next one, without ending the whole loop (unlike break).",
+    tr: "Deyim. Döngünün mevcut adımını atlayıp sonrakine geçer, tüm döngüyü bitirmez (break'ten farkı budur)." } },
+  { category: "ts", term: ": string", example: "let name: string = \"Аня\";", note: {
+    ru: "Аннотация типа. Говорит компилятору, что переменная может хранить только строку — ошибка подсветится ещё до запуска кода.",
+    en: "Type annotation. Tells the compiler the variable can only hold a string — the error shows up before the code even runs.",
+    tr: "Tür belirtimi. Derleyiciye değişkenin yalnızca metin tutabileceğini söyler — hata, kod çalışmadan önce görünür." } },
+  { category: "js", term: { ru: "объект { }", en: "object { }", tr: "nesne { }" }, example: "const catNames = { js: \"JavaScript\" };", note: {
+    ru: "Набор пар «ключ: значение». Как словарик: слева короткое слово, справа то, что оно значит.",
+    en: "A set of 'key: value' pairs. Like a little dictionary: a short word on the left, what it means on the right.",
+    tr: "'anahtar: değer' çiftlerinden oluşan küme. Küçük bir sözlük gibi: solda kısa bir kelime, sağda anlamı." } },
+  { category: "js", term: { ru: "объект[ключ]", en: "object[key]", tr: "nesne[anahtar]" }, example: "catNames[\"js\"]  // \"JavaScript\"", note: {
+    ru: "Достаёт значение по ключу. Если такого ключа нет, получится undefined.",
+    en: "Gets the value by its key. If there's no such key, you get undefined.",
+    tr: "Değeri anahtarına göre getirir. Böyle bir anahtar yoksa undefined elde edilir." } }
 ];
-
 </script>
 <script>
 const catNames = { html: "HTML", css: "CSS", js: "JavaScript", ts: "TypeScript" };
-const palette = ["#f28fb0", "#a98ff0", "#5ec9c2", "#f2b56b"];
-
+const palette = ["#9cc37e", "#7ccdb2", "#c8dc78", "#f0b8c8", "#8fd3a4"];
 const log = document.getElementById("log");
 
+let lang = "ru";
+let dark = matchMedia("(prefers-color-scheme: dark)").matches;
+let first = true;
+try {
+  lang = localStorage.getItem("g-lang") || "ru";
+  const t = localStorage.getItem("g-theme");
+  if (t) dark = t === "dark";
+} catch (e) {}
+
 function esc(str) {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-entries.forEach((e, i) => {
-  const card = document.createElement("div");
-  card.className = "entry";
-  card.style.setProperty("--accent", palette[i % palette.length]);
-  card.innerHTML = `
-    <span class="entry-tag">${catNames[e.category]}</span>
-    <p class="entry-term">${esc(e.term)}</p>
-    <p class="entry-note">${esc(e.note)}</p>
-    ${e.example ? `<pre class="entry-example">${esc(e.example)}</pre>` : ""}
-  `;
-  log.appendChild(card);
-});
+function pick(x) {
+  return typeof x === "object" ? x[lang] : x;
+}
 
+function render() {
+  document.documentElement.lang = lang;
+  document.documentElement.classList.toggle("dark", dark);
+  document.getElementById("title").textContent = ui[lang].t;
+  document.getElementById("sub").textContent = ui[lang].s;
+  document.getElementById("controls").innerHTML = Object.keys(ui)
+    .map(l => `<button class="${l === lang ? "on" : ""}" onclick="setLang('${l}')">${l.toUpperCase()}</button>`)
+    .join("") + `<button onclick="toggleTheme()" aria-label="theme">${dark ? "☀️" : "🌙"}</button>`;
+  log.innerHTML = "";
+  entries.forEach((e, i) => {
+    const card = document.createElement("div");
+    card.className = "entry" + (first ? " rise" : "");
+    card.style.setProperty("--accent", palette[i % palette.length]);
+    card.style.animationDelay = Math.min(i, 8) * 70 + "ms";
+    card.innerHTML = `
+      <span class="entry-tag">${catNames[e.category]}</span>
+      <p class="entry-term">${esc(pick(e.term))}</p>
+      <p class="entry-note">${esc(pick(e.note))}</p>
+      ${e.example ? `<pre class="entry-example">${esc(e.example)}</pre>` : ""}
+    `;
+    log.appendChild(card);
+  });
+  first = false;
+}
+
+function setLang(l) {
+  lang = l;
+  try { localStorage.setItem("g-lang", l); } catch (e) {}
+  render();
+}
+
+function toggleTheme() {
+  dark = !dark;
+  try { localStorage.setItem("g-theme", dark ? "dark" : "light"); } catch (e) {}
+  render();
+}
+
+render();
 </script>
 </body>
 </html>
