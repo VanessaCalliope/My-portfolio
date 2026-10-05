@@ -3,28 +3,68 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Мой Блог</title>
+<title>Мой Блог (v1 гортензия)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #FBF8F3;
-    --paper-soft: #F3EEE4;
-    --ink: #2E2A24;
-    --ink-soft: #6B6355;
-    --accent: #C99CA3;
-    --accent-dark: #B07E87;
-    --line: #E3DCCC;
+    --paper: #FCF9FE;
+    --paper-soft: #F4EEFA;
+    --ink: #3A3548;
+    --ink-soft: #7A7391;
+    --accent: #B4A8E3;
+    --accent-dark: #907FCB;
+    --accent-hover: #7A69B8;
+    --on-accent: #fff;
+    --line: #E6DDF2;
+    --danger: #C2587A;
+    /* soft background glow */
+    --blob1: #F9D9E2;
+    --blob2: #DAD6F4;
+    --blob3: #D3EBE3;
+    /* pastel tints for posts: pink, butter, mint, blue, lavender */
+    --t0: #FBDDE5;
+    --t1: #F6F1C8;
+    --t2: #D6EEE3;
+    --t3: #D3E8F0;
+    --t4: #E0DBF5;
+  }
+
+  [data-theme="dark"] {
+    --paper: #2A2340;
+    --paper-soft: #352D4F;
+    --ink: #F4EEFF;
+    --ink-soft: #B9B0D6;
+    --line: #4E4470;
+    --accent: #B4A8E3;
+    --accent-dark: #907FCB;
+    --accent-hover: #7A69B8;
+    --on-accent: #fff;
+    --danger: #F29BB5;
+    --blob1: #6A3F66;
+    --blob2: #7A6DB3;
+    --blob3: #2F6660;
+    --t0: #5A3752;
+    --t1: #524C35;
+    --t2: #2F5148;
+    --t3: #2F4A5E;
+    --t4: #453B6B;
   }
 
   * { box-sizing: border-box; }
 
   body {
     margin: 0;
-    background: var(--paper);
+    background-color: var(--paper);
+    background-image:
+      radial-gradient(circle at 10% 8%, var(--blob1) 0, transparent 38%),
+      radial-gradient(circle at 92% 28%, var(--blob2) 0, transparent 38%),
+      radial-gradient(circle at 25% 95%, var(--blob3) 0, transparent 42%);
+    background-attachment: fixed;
     color: var(--ink);
     font-family: 'Inter', sans-serif;
     line-height: 1.55;
+    transition: background 0.25s ease, color 0.25s ease;
   }
 
   .wrap {
@@ -35,8 +75,9 @@
 
   header {
     margin-bottom: 40px;
-    border-bottom: 1px solid var(--line);
     padding-bottom: 28px;
+    border-bottom: 4px solid transparent;
+    border-image: linear-gradient(90deg, #F4B8C8, #F6E7A8, #BFE5D4, #BDDDEA, #C9C0EE) 1;
   }
 
   h1 {
@@ -53,10 +94,41 @@
     margin: 0;
   }
 
+  .tools {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .langs { display: flex; gap: 6px; }
+
+  .tools button {
+    padding: 6px 12px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper-soft);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .tools button:hover { border-color: var(--accent); }
+
+  .tools button.active {
+    background: var(--accent-dark);
+    border-color: var(--accent-dark);
+    color: var(--on-accent);
+  }
+
   section.new-post {
     background: var(--paper-soft);
     border: 1px solid var(--line);
-    border-radius: 10px;
+    border-radius: 16px;
     padding: 24px;
     margin-bottom: 44px;
   }
@@ -81,6 +153,9 @@
     resize: vertical;
   }
 
+  [data-theme="dark"] input[type="text"],
+  [data-theme="dark"] textarea { background: var(--paper); }
+
   textarea { min-height: 100px; }
 
   input[type="text"]:focus, textarea:focus {
@@ -89,8 +164,8 @@
   }
 
   button.publish {
-    background: var(--accent);
-    color: #fff;
+    background: var(--accent-dark);
+    color: var(--on-accent);
     border: none;
     padding: 11px 22px;
     border-radius: 7px;
@@ -101,10 +176,10 @@
     transition: background 0.15s ease;
   }
 
-  button.publish:hover { background: var(--accent-dark); }
+  button.publish:hover { background: var(--accent-hover); }
 
   .error {
-    color: #B0432F;
+    color: var(--danger);
     font-size: 0.85rem;
     margin: -4px 0 10px;
     display: none;
@@ -118,11 +193,16 @@
   }
 
   .post {
-    border-bottom: 1px solid var(--line);
-    padding: 20px 0;
+    background: var(--t0);
+    border-radius: 16px;
+    padding: 18px 20px 14px;
+    margin-bottom: 14px;
   }
 
-  .post:last-child { border-bottom: none; }
+  .post.t1 { background: var(--t1); }
+  .post.t2 { background: var(--t2); }
+  .post.t3 { background: var(--t3); }
+  .post.t4 { background: var(--t4); }
 
   .post-top {
     display: flex;
@@ -160,27 +240,35 @@
     text-decoration: underline;
   }
 
-  .delete-btn:hover { color: #B0432F; }
+  .delete-btn:hover { color: var(--danger); }
 </style>
 </head>
 <body>
 
 <div class="wrap">
   <header>
-    <h1>Мой Блог</h1>
-    <p class="tagline">Здесь я делюсь своими мыслями</p>
+    <h1 data-i18n="title">Мой Блог</h1>
+    <p class="tagline" data-i18n="tag">Здесь я делюсь своими мыслями</p>
+    <div class="tools">
+      <div class="langs">
+        <button data-lang="ru">RU</button>
+        <button data-lang="en">EN</button>
+        <button data-lang="tr">TR</button>
+      </div>
+      <button id="themeBtn">🌙</button>
+    </div>
   </header>
 
   <section class="new-post">
-    <h2>Добавить новую запись</h2>
-    <input type="text" id="titleInput" placeholder="Заголовок записи">
-    <textarea id="textInput" placeholder="Текст вашей записи..."></textarea>
-    <p class="error" id="errorMsg">Заполни и заголовок, и текст 🙂</p>
-    <button class="publish" id="publishBtn">Опубликовать</button>
+    <h2 data-i18n="add">Добавить новую запись</h2>
+    <input type="text" id="titleInput" data-ph="ph1" placeholder="Заголовок записи">
+    <textarea id="textInput" data-ph="ph2" placeholder="Текст вашей записи..."></textarea>
+    <p class="error" id="errorMsg" data-i18n="err">Заполни и заголовок, и текст 🙂</p>
+    <button class="publish" id="publishBtn" data-i18n="pub">Опубликовать</button>
   </section>
 
   <section class="posts">
-    <h2 class="list-title">Все записи</h2>
+    <h2 class="list-title" data-i18n="all">Все записи</h2>
     <div id="postsList"></div>
   </section>
 </div>
@@ -193,6 +281,23 @@
   var publishBtn = document.getElementById('publishBtn');
   var errorMsg = document.getElementById('errorMsg');
   var postsList = document.getElementById('postsList');
+  var langBtns = document.querySelectorAll('[data-lang]');
+  var themeBtn = document.getElementById('themeBtn');
+
+  var T = {
+    ru: { title: 'Мой Блог', tag: 'Здесь я делюсь своими мыслями', add: 'Добавить новую запись',
+          ph1: 'Заголовок записи', ph2: 'Текст вашей записи...', err: 'Заполни и заголовок, и текст 🙂',
+          pub: 'Опубликовать', all: 'Все записи', del: 'Удалить', loc: 'ru-RU' },
+    en: { title: 'My Blog', tag: 'Where I share my thoughts', add: 'Add a new post',
+          ph1: 'Post title', ph2: 'Your post text...', err: 'Please fill in both the title and the text 🙂',
+          pub: 'Publish', all: 'All posts', del: 'Delete', loc: 'en-US' },
+    tr: { title: 'Blogum', tag: 'Düşüncelerimi burada paylaşıyorum', add: 'Yeni yazı ekle',
+          ph1: 'Yazı başlığı', ph2: 'Yazının metni...', err: 'Başlığı ve metni doldur 🙂',
+          pub: 'Yayınla', all: 'Tüm yazılar', del: 'Sil', loc: 'tr-TR' }
+  };
+
+  var lang = localStorage.getItem('lang') || 'ru';
+  var theme = localStorage.getItem('theme') || 'light';
 
   function loadPosts() {
     var raw = localStorage.getItem(STORAGE_KEY);
@@ -219,18 +324,52 @@
 
     for (var i = posts.length - 1; i >= 0; i--) {
       var post = posts[i];
-      html += '<div class="post">';
+      var date = new Date(post.id).toLocaleDateString(T[lang].loc, { day: 'numeric', month: 'long', year: 'numeric' });
+      html += '<div class="post t' + (i % 5) + '">';
       html += '<div class="post-top">';
       html += '<h3>' + escapeHtml(post.title) + '</h3>';
-      html += '<span class="date">' + post.date + '</span>';
+      html += '<span class="date">' + date + '</span>';
       html += '</div>';
       html += '<p>' + escapeHtml(post.text) + '</p>';
-      html += '<button class="delete-btn" onclick="deletePost(' + post.id + ')">Удалить</button>';
+      html += '<button class="delete-btn" onclick="deletePost(' + post.id + ')">' + T[lang].del + '</button>';
       html += '</div>';
     }
 
     postsList.innerHTML = html;
   }
+
+  function applyAll() {
+    document.documentElement.lang = lang;
+    document.documentElement.dataset.theme = theme;
+    document.title = T[lang].title;
+
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      el.textContent = T[lang][el.dataset.i18n];
+    });
+    document.querySelectorAll('[data-ph]').forEach(function (el) {
+      el.placeholder = T[lang][el.dataset.ph];
+    });
+
+    langBtns.forEach(function (btn) {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+    themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+    renderPosts();
+  }
+
+  langBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      lang = btn.dataset.lang;
+      localStorage.setItem('lang', lang);
+      applyAll();
+    });
+  });
+
+  themeBtn.addEventListener('click', function () {
+    theme = theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', theme);
+    applyAll();
+  });
 
   publishBtn.addEventListener('click', function () {
     var title = titleInput.value.trim();
@@ -246,8 +385,7 @@
     var newPost = {
       id: Date.now(),
       title: title,
-      text: text,
-      date: new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
+      text: text
     };
     posts.push(newPost);
     savePosts(posts);
@@ -271,7 +409,7 @@
     renderPosts();
   }
 
-  renderPosts();
+  applyAll();
 </script>
 
 </body>
