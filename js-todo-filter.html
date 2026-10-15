@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мой идеальный день</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+
+    .app-card {
+      background: white;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin: auto;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #2d3748;
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* Блок с кнопками-переключателями */
+    .filters-container {
+      display: flex;
+      background: #edf2f7;
+      padding: 4px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .filters-container button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      font-weight: 600;
+      color: #718096;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      font-size: 14px;
+    }
+
+    .filters-container button.active {
+      background: white;
+      color: #4a5568;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+ 
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      color: #a0aec0;
+      font-size: 14px;
+      margin-bottom: 15px;
+      padding: 0 4px;
+    }
+
+    .status-bar span {
+      font-weight: bold;
+      color: #4a5568;
+    }
+
+    .task-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px;
+      background: #f7fafc;
+      margin-bottom: 10px;
+      border-radius: 12px;
+      color: #4a5568;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+
+    .task-item.completed {
+      background: #edf2f7;
+      color: #a0aec0;
+      text-decoration: line-through;
+      opacity: 0.8;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #a0aec0;
+      font-style: italic;
+      padding: 30px 0;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+    <h2>✨ План на сегодня</h2>
+
+    <!-- Фильтры -->
+    <div id="filters" class="filters-container">
+      <button data-filter="all" class="active">Все</button>
+      <button data-filter="done">Сделано</button>
+      <button data-filter="todo">Осталось</button>
+    </div>
+
+    <div class="status-bar">
+      <div>Показано дел: <span id="counter">0</span></div>
+    </div>
+    
+    <!-- Список -->
+    <ul id="taskList" class="task-list"></ul>
+  </div>
+
+  <script>
+    // Наш жизненный список
+    const myTasks = [
+      { text: "Полить любимые цветы 🌿", completed: true },
+      { text: "Купить подарок маме 🎁", completed: true },
+      { text: "Английский на 30 минут 🇬🇧", completed: false },
+      { text: "Вечерняя прогулка / тренировка 👟", completed: false }
+    ];
+
+    const listEl = document.getElementById('taskList');
+    const counterEl = document.getElementById('counter');
+    const filtersContainer = document.getElementById('filters');
+
+    function render(filterType = 'all') {
+      listEl.innerHTML = ''; 
+
+      const filtered = myTasks.filter(item => {
+        if (filterType === 'done') return item.completed;
+        if (filterType === 'todo') return !item.completed;
+        return true;
+      });
+
+      counterEl.textContent = filtered.length;
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = '<li class="empty-state">В этой категории пока пусто... 💨</li>';
+        return;
+      }
+
+      filtered.forEach(item => {
+        const li = document.createElement('li');
+        li.className = `task-item ${item.completed ? 'completed' : ''}`;
+        li.textContent = item.text;
+        listEl.appendChild(li);
+      });
+    }
+
+    filtersContainer.addEventListener('click', (event) => {
+      if (event.target.tagName !== 'BUTTON') return;
+
+      document.querySelectorAll('#filters button').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+
+      render(event.target.dataset.filter);
+    });
+
+    // Старт
+    render();
+  </script>
+</body>
+</html>
