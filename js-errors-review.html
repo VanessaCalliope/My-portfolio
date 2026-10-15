@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Разбор ошибок</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+    .task { background: #f4f7f6; padding: 15px; margin-bottom: 20px; border-radius: 8px; border-left: 5px solid #007bff; }
+    h3 { margin-top: 0; color: #333; }
+    pre { background: #272822; color: #f8f8f2; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    .error-text { color: #dc3545; font-weight: bold; }
+    .success-text { color: #28a745; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h2>📋 Работа над ошибками (3 задания)</h2>
+  <p>Результаты проверок кода выводятся в консоль браузера (F12 -> Console).</p>
+
+  <!-- Задание 1 -->
+  <div class="task">
+    <h3>Задание 1: Строгое сравнение типов данных</h3>
+    <p><strong>В чём была ошибка:</strong> Использовалось нестрогое сравнение <code>==</code> вместо строгого <code>===</code>, из-за чего строка "5" приравнивалась к числу 5.</p>
+    <p><strong>Как нашла:</strong> Заметила, что функция возвращала true там, где типы данных должны быть разными.</p>
+  </div>
+
+  <!-- Задание 2 -->
+  <div class="task">
+    <h3>Задание 2: Фильтрация массива (метод filter)</h3>
+    <p><strong>В чём была ошибка:</strong> Забыла написать ключевое слово <code>return</code> внутри функции фильтрации, из-за чего метод возвращал пустой массив.</p>
+    <p><strong>Как нашла:</strong> Вывела результат работы функции в консоль и увидела <code>[]</code> вместо отфильтрованных элементов.</p>
+  </div>
+
+  <!-- Задание 3 -->
+  <div class="task">
+    <h3>Задание 3: Подсчет суммы чисел в цикле</h3>
+    <p><strong>В чём была ошибка:</strong> Переменная для суммы была случайно создана внутри цикла <code>for</code>, поэтому на каждой итерации она сбрасывалась заново.</p>
+    <p><strong>Как нашла:</strong> Проверила код по шагам и увидела, что итоговый результат всегда равен последнему числу.</p>
+  </div>
+
+  <script>
+    function checkAgeStrict(value) {
+      return value === 18; // Исправлено на ===
+    }
+    console.log("--- Тест 1: Сравнение типов ---");
+    console.log("Вход: 18 (число) -> Ожидаем: true -> Результат:", checkAgeStrict(18));
+    console.log("Вход: '18' (строка) -> Ожидаем: false -> Результат:", checkAgeStrict('18'));
+
+    function getEvenNumbers(arr) {
+      return arr.filter(num => {
+        return num % 2 === 0; // Исправлено: добавлен return
+      });
+    }
+    console.log("\n--- Тест 2: Фильтрация массива ---");
+    console.log("Вход: [1, 2, 3, 4] -> Ожидаем: [2, 4] -> Результат:", getEvenNumbers([1, 2, 3, 4]));
+    console.log("Вход: [5, 7, 10] -> Ожидаем: [10] -> Результат:", getEvenNumbers([5, 7, 10]));
+
+    function calculateSum(limit) {
+      let sum = 0; // Исправлено: вынесено за пределы цикла
+      for (let i = 1; i <= limit; i++) {
+        sum += i;
+      }
+      return sum;
+    }
+    console.log("\n--- Тест 3: Подсчет суммы ---");
+    console.log("Вход: 3 (1+2+3) -> Ожидаем: 6 -> Результат:", calculateSum(3));
+    console.log("Вход: 5 (1+2+3+4+5) -> Ожидаем: 15 -> Результат:", calculateSum(5));
+  </script>
+</body>
+</html>
